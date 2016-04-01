@@ -32,7 +32,9 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
         }
     }
 
-    public AdaptadorHistorial(){}
+    public AdaptadorHistorial(){
+    }
+
     public AdaptadorHistorial(List<Historial> listaHistoriales) {
         this.listaHistoriales = listaHistoriales;
     }
