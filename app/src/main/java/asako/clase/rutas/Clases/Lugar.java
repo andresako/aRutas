@@ -8,6 +8,8 @@ public class Lugar implements Serializable {
 
     private String nombre;
     private LatLng posicion;
+    private String detalles = "";
+    private int tiempoMedio = 0;
 
     public Lugar() {
     }
@@ -21,5 +23,19 @@ public class Lugar implements Serializable {
     }
     public LatLng getPosicion() {
         return posicion;
+    }
+
+    public void setDetalles(String detalles){
+        this.detalles = detalles;
+    }
+    public String getDetalles(){
+        return this.detalles;
+    }
+
+    public void setTiempoMedio(int tiempoMedio){
+        this.tiempoMedio = tiempoMedio;
+    }
+    public int getTiempoMedio(){
+        return this.tiempoMedio;
     }
 }

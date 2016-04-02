@@ -51,7 +51,7 @@ public class FragmentoCuenta extends Fragment {
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
         adapter.addFragment(new FragmentoPerfil(), getString(R.string.titulo_tab_perfil));
-        adapter.addFragment(new FragmentoHistorialLista(), getString(R.string.titulo_tab_historial));
+        adapter.addFragment(new FragmentoHistorial(), getString(R.string.titulo_tab_historial));
         viewPager.setAdapter(adapter);
     }
 

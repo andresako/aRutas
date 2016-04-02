@@ -68,15 +68,22 @@ public class PantallaInicio extends AppCompatActivity {
             case R.id.item_inicio:
                 fragmentoGenerico = new FragmentoInicio();
                 break;
-            case R.id.item_cuenta:
-                fragmentoGenerico = new FragmentoCuenta();
-                break;
+
             case R.id.item_pInteres:
                 // fragmentoGenerico = new FragmentoCategorias();
                 break;
+
+            case R.id.item_rutas:
+                break;
+
+            case R.id.item_cuenta:
+                fragmentoGenerico = new FragmentoCuenta();
+                break;
+
             case R.id.item_mapa:
                 startActivity(new Intent(this, MapsActivity.class));
                 break;
+
             case R.id.item_configuracion:
                 //startActivity(new Intent(this, MapsActivity.class));
                 break;
@@ -105,5 +112,12 @@ public class PantallaInicio extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if(fm.getBackStackEntryCount() > 0) fm.popBackStack();
+        else super.onBackPressed();
     }
 }

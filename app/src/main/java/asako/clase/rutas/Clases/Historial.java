@@ -1,6 +1,8 @@
 package asako.clase.rutas.Clases;
 
-public class Historial {
+import java.io.Serializable;
+
+public class Historial implements Serializable{
 
     private String fecha;
     private Ruta ruta;
@@ -16,7 +18,6 @@ public class Historial {
     public String getFecha() {
         return fecha;
     }
-
     public Ruta getRuta(){
         return this.ruta;
     }
