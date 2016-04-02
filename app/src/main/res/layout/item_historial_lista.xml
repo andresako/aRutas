@@ -1,50 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/espacio_normal_2">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/texto_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Titulo de ruta"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/texto_fecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fecha"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/texto_puntos_visitados"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Puntos visitados"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:id="@+id/texto_tiempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tiempo empleado"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/texto_distancia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distancia recorrida"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/icono_indicador_derecho"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/indicador_derecho" />
+        android:background="@drawable/indicador_derecho" />
 </RelativeLayout>

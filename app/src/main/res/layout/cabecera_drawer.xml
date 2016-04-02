@@ -34,24 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/km_recorridos"
+                android:text="@string/subTitle"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textStyle="bold" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/texto_total_carrito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="0 Km."
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textStyle="bold" />
         </TableRow>
 
     </TableLayout>

@@ -45,7 +45,6 @@ public class PantallaInicio extends AppCompatActivity {
             ab.setHomeAsUpIndicator(R.drawable.drawer_toggle);
             ab.setDisplayHomeAsUpEnabled(true);
         }
-
     }
 
     private void prepararDrawer(NavigationView navigationView) {
@@ -59,7 +58,6 @@ public class PantallaInicio extends AppCompatActivity {
                         return true;
                     }
                 });
-
     }
 
     private void seleccionarItem(MenuItem itemDrawer) {
@@ -71,13 +69,16 @@ public class PantallaInicio extends AppCompatActivity {
                 fragmentoGenerico = new FragmentoInicio();
                 break;
             case R.id.item_cuenta:
-                //fragmentoGenerico = new FragmentoCuenta();
+                fragmentoGenerico = new FragmentoCuenta();
                 break;
             case R.id.item_pInteres:
                 // fragmentoGenerico = new FragmentoCategorias();
                 break;
-            case R.id.item_configuracion:
+            case R.id.item_mapa:
                 startActivity(new Intent(this, MapsActivity.class));
+                break;
+            case R.id.item_configuracion:
+                //startActivity(new Intent(this, MapsActivity.class));
                 break;
         }
         if (fragmentoGenerico != null) {
@@ -85,10 +86,9 @@ public class PantallaInicio extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.contenedor_principal, fragmentoGenerico)
                     .commit();
+            // Setear título actual
+            setTitle(itemDrawer.getTitle());
         }
-
-        // Setear título actual
-        setTitle(itemDrawer.getTitle());
     }
 
     @Override

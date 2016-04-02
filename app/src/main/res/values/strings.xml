@@ -1,14 +1,29 @@
 <resources>
     <string name="app_name">Rutas</string>
-    <string name="configuracion">configuracion</string>
-    <string name="inicio">inicio</string>
-    <string name="cuenta">cuenta</string>
-    <string name="puntos_interes">puntos de interés</string>
-    <string name="km_recorridos">Kilometros recorridos</string>
+    <string name="subTitle">Tu app de Rutas!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Etiquetas del menu-->
+    <string name="TAG_inicio">Inicio</string>
+    <string name="TAG_puntos_interes">Puntos de interés</string>
+    <string name="TAG_rutas">Rutas</string>
+    <string name="TAG_mapa">Ver mapa</string>
+    <string name="TAG_cuenta">Cuenta</string>
+    <string name="TAG_configuracion">Configuracion</string>
+
+    <!-- Etiquetas de Fragments -->
+    <string name="titulo_tab_perfil">Perfil</string>
+    <string name="etiqueta_info_usuario">Informacion del usuario</string>
+    <string name="etiqueta_punto_salida">Punto de salida</string>
+    <string name="etiqueta_cambiar_salida">Cambiar punto de salida</string>
+
+    <string name="titulo_tab_historial">Historial</string>
+    <string name="etiqueta_fecha">Fecha</string>
+    <string name="tiempo_empleado">Tiempo</string>
+    <string name="distancia_total">Distancia</string>
+
     <string name="title_activity_maps">Map</string>
+
+    <!-- Etiquetas sueltas -->
     <string name="google_app_id">1268</string>
 
 </resources>

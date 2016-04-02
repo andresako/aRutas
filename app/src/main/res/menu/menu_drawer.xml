@@ -6,19 +6,23 @@
             android:id="@+id/item_inicio"
             android:checked="true"
             android:icon="@drawable/inicio"
-            android:title="@string/inicio" />
-        <item
-            android:id="@+id/item_cuenta"
-            android:icon="@drawable/cuenta"
-            android:title="@string/cuenta" />
+            android:title="@string/TAG_inicio" />
         <item
             android:id="@+id/item_pInteres"
             android:icon="@drawable/lista"
-            android:title="@string/puntos_interes" />
+            android:title="@string/TAG_puntos_interes" />
+        <item
+            android:id="@+id/item_cuenta"
+            android:icon="@drawable/cuenta"
+            android:title="@string/TAG_cuenta" />
+        <item
+            android:id="@+id/item_mapa"
+            android:icon="@drawable/mapa"
+            android:title="@string/TAG_mapa" />
         <item
             android:id="@+id/item_configuracion"
             android:icon="@drawable/configuracion"
-            android:title="@string/configuracion" />
+            android:title="@string/TAG_configuracion" />
     </group>
 
 </menu>
