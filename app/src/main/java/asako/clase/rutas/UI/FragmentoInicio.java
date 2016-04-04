@@ -22,11 +22,11 @@ public class FragmentoInicio extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragmento_inicio, container, false);
 
-        RecyclerView reciclador = (RecyclerView)view.findViewById(R.id.reciclador);
+        RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(layoutManager);
 
-        AdaptadorHistorial adaptador = new AdaptadorHistorial(MiConfig.LISTA_HISTORIAL);
+        AdaptadorHistorial adaptador = new AdaptadorHistorial(MiConfig.LISTA_HISTORIAL, getFragmentManager());
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 

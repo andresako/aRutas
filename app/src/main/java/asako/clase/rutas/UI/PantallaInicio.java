@@ -15,16 +15,17 @@ import android.view.MenuItem;
 
 import asako.clase.rutas.R;
 
-
 public class PantallaInicio extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_inicio);
 
+        fragmentManager = getSupportFragmentManager();
         agregarToolbar();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,7 +63,6 @@ public class PantallaInicio extends AppCompatActivity {
 
     private void seleccionarItem(MenuItem itemDrawer) {
         Fragment fragmentoGenerico = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (itemDrawer.getItemId()) {
             case R.id.item_inicio:
@@ -112,12 +112,5 @@ public class PantallaInicio extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        if(fm.getBackStackEntryCount() > 0) fm.popBackStack();
-        else super.onBackPressed();
     }
 }

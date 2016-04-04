@@ -20,17 +20,16 @@ public class FragmentoHistorial extends Fragment {
     public FragmentoHistorial() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragmento_historial, container, false);
 
-        RecyclerView reciclador = (RecyclerView)view.findViewById(R.id.reciclador);
+        RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
 
-        AdaptadorHistorial adaptador = new AdaptadorHistorial(MiConfig.LISTA_HISTORIAL);
+        AdaptadorHistorial adaptador = new AdaptadorHistorial(MiConfig.LISTA_HISTORIAL, getFragmentManager());
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 

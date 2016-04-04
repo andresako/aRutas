@@ -13,7 +13,7 @@
             android:title="@string/TAG_puntos_interes" />
         <item
             android:id="@+id/item_rutas"
-            android:icon="@drawable/lista"
+            android:icon="@drawable/ruta"
             android:title="@string/TAG_rutas" />
         <item
             android:id="@+id/item_cuenta"

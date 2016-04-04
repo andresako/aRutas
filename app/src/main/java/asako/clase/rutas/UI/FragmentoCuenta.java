@@ -17,7 +17,6 @@ import java.util.List;
 
 import asako.clase.rutas.R;
 
-
 public class FragmentoCuenta extends Fragment {
 
     private AppBarLayout appBar;
@@ -26,12 +25,12 @@ public class FragmentoCuenta extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragmento_cuenta, container, false);
+        View view = inflater.inflate(R.layout.fragmento_cuenta, container, false);
 
         if (savedInstanceState == null) {
+
             insertarTabs(container);
 
-            // Setear adaptador al viewpager.
             viewPager = (ViewPager) view.findViewById(R.id.pager);
             poblarViewPager(viewPager);
             tabs.setupWithViewPager(viewPager);
@@ -57,8 +56,8 @@ public class FragmentoCuenta extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         appBar.removeView(tabs);
+        super.onDestroyView();
     }
 
     public class AdaptadorSecciones extends FragmentStatePagerAdapter {
@@ -70,7 +69,7 @@ public class FragmentoCuenta extends Fragment {
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
             return fragmentos.get(position);
         }
 
@@ -79,7 +78,7 @@ public class FragmentoCuenta extends Fragment {
             return fragmentos.size();
         }
 
-        public void addFragment(android.support.v4.app.Fragment fragment, String title) {
+        public void addFragment(Fragment fragment, String title) {
             fragmentos.add(fragment);
             titulosFragmentos.add(title);
         }
