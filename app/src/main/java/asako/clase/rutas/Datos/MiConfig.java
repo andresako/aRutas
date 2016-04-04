@@ -27,9 +27,11 @@ public class MiConfig {
         LISTA_PUNTOS.add(new Lugar("Punto 2", new LatLng(38.369, -0.479)));
         LISTA_PUNTOS.add(new Lugar("Punto 3", new LatLng(38.344, -0.507)));
 
+        LISTA_PUNTOS.get(0).setDetalles("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ");
+
         Ruta ruta1 = new Ruta("Ruta1");
         ruta1.addTiempo(15);
-        ruta1.addDistancia(20000);
+        ruta1.addDistancia(20020);
         ruta1.addLugar(LISTA_PUNTOS.get(0));
 
         Ruta ruta2 = new Ruta("Ruta2");

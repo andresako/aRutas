@@ -41,10 +41,18 @@ public class FragmentoRuta extends Fragment {
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 
+        int Idist = ht.getRuta().getDistancia() / 1000;
+        int Idist2 = ht.getRuta().getDistancia() % 1000;
+        String Sdist = Idist + "," + Idist2 + " Kms";
+
+        int hours = ht.getRuta().getTiempo() / 60;
+        int minutes = ht.getRuta().getTiempo() % 60;
+        String time = hours + ":" + minutes + "h";
+
         ((TextView) v.findViewById(R.id.titulo_historial)).setText(ht.getRuta().getTitulo());
         ((TextView) v.findViewById(R.id.texto_fecha)).setText(ht.getFecha());
-        ((TextView) v.findViewById(R.id.texto_distancia)).setText(ht.getRuta().getDistancia() + " metros");
-        ((TextView) v.findViewById(R.id.texto_tiempo)).setText(ht.getRuta().getTiempo() + " minutos");
+        ((TextView) v.findViewById(R.id.texto_distancia)).setText(Sdist);
+        ((TextView) v.findViewById(R.id.texto_tiempo)).setText(time);
 
         return v;
     }

@@ -70,7 +70,7 @@ public class PantallaInicio extends AppCompatActivity {
                 break;
 
             case R.id.item_pInteres:
-                // fragmentoGenerico = new FragmentoCategorias();
+                fragmentoGenerico = new FragmentoPuntos();
                 break;
 
             case R.id.item_rutas:
