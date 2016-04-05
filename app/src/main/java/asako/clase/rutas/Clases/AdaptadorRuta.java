@@ -1,7 +1,6 @@
 package asako.clase.rutas.Clases;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +40,11 @@ public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Lugar lugar = ruta.getListaLugaresVisitados().get(position);
-        holder.nombre.setText(lugar.getNombre());
-        holder.direccion.setText(lugar.getPosicion().toString());
-        holder.tiempo.setText(lugar.getTiempoMedio() + "minutos");
-        holder.detalle.setText(lugar.getDetalles());
+        Punto punto = ruta.getListaLugaresVisitados().get(position);
+        holder.nombre.setText(punto.getNombre());
+        holder.direccion.setText(punto.getPosicion().toString());
+        holder.tiempo.setText(punto.getTiempoMedio() + "minutos");
+        holder.detalle.setText(punto.getDetalles());
     }
 
     @Override

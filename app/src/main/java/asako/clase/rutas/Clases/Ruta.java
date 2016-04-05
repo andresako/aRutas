@@ -7,7 +7,7 @@ public class Ruta {
     private String titulo;
     private int tiempo = 0;
     private int distancia = 0;
-    private List<Lugar> listaLugaresVisitados = new ArrayList<>();
+    private List<Punto> listaLugaresVisitados = new ArrayList<>();
 
     public Ruta() {
     }
@@ -16,7 +16,7 @@ public class Ruta {
         this.titulo = titulo;
     }
 
-    public Ruta(String titulo, int tiempo, int distancia, List<Lugar> listaLugaresVisitados) {
+    public Ruta(String titulo, int tiempo, int distancia, List<Punto> listaLugaresVisitados) {
         this.titulo = titulo;
         this.tiempo = tiempo;
         this.distancia = distancia;
@@ -35,7 +35,7 @@ public class Ruta {
         return distancia;
     }
 
-    public List<Lugar> getListaLugaresVisitados() {
+    public List<Punto> getListaLugaresVisitados() {
         return listaLugaresVisitados;
     }
 
@@ -47,8 +47,8 @@ public class Ruta {
         this.distancia += distancia;
     }
 
-    public void addLugar(Lugar lugar) {
-        this.listaLugaresVisitados.add(lugar);
+    public void addLugar(Punto punto) {
+        this.listaLugaresVisitados.add(punto);
     }
 
 }

@@ -1,5 +1,7 @@
 package asako.clase.rutas.UI;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,7 +36,6 @@ public class PantallaInicio extends AppCompatActivity {
 
         if (navigationView != null) {
             prepararDrawer(navigationView);
-            // Seleccionar item por defecto
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
     }
@@ -112,5 +114,29 @@ public class PantallaInicio extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() != 0 && fragmentManager.findFragmentByTag("puntoActivo") != null) {
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
+            alert.setTitle("Seguro que quiere salir de la edicion??");
+
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    fragmentManager.popBackStackImmediate();
+                }
+            });
+
+            alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            alert.show();
+
+
+            Log.d("BackStack count:", fragmentManager.getBackStackEntryCount() + "");
+        } else super.onBackPressed();
     }
 }

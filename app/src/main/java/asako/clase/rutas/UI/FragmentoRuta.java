@@ -3,6 +3,7 @@ package asako.clase.rutas.UI;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ public class FragmentoRuta extends Fragment {
     private Historial ht;
     private LinearLayoutManager linearLayout;
     private AppBarLayout appBar;
+    private DrawerLayout mDrawer;
 
     public FragmentoRuta() {
     }
@@ -29,7 +31,10 @@ public class FragmentoRuta extends Fragment {
 
         View padre = (View) container.getParent();
         appBar = (AppBarLayout) padre.findViewById(R.id.appbar);
-        if (appBar.isShown()) appBar.setVisibility(View.GONE);
+        appBar.setVisibility(View.GONE);
+
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer_layout);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         ht = (Historial) getArguments().get("historial");
 
@@ -60,6 +65,7 @@ public class FragmentoRuta extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (appBar.getVisibility() == View.GONE) appBar.setVisibility(View.VISIBLE);
+        appBar.setVisibility(View.VISIBLE);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

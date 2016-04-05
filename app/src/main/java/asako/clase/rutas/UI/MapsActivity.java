@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import asako.clase.rutas.Clases.Lugar;
+import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.Datos.MiConfig;
 import asako.clase.rutas.R;
 
@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //DUMMY DATOS
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Lugar puntos : MiConfig.LISTA_PUNTOS) {
+        for (Punto puntos : MiConfig.LISTA_PUNTOS) {
             mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNombre()));
             builder.include(puntos.getPosicion());
         }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import asako.clase.rutas.Clases.AdaptadorHistorial;
 import asako.clase.rutas.Clases.AdaptadorPunto;
 import asako.clase.rutas.Datos.MiConfig;
 import asako.clase.rutas.R;
@@ -31,7 +30,8 @@ public class FragmentoPuntos extends Fragment {
         linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
 
-        AdaptadorPunto adaptador = new AdaptadorPunto(MiConfig.LISTA_PUNTOS);
+        AdaptadorPunto adaptador = new AdaptadorPunto(MiConfig.LISTA_PUNTOS, getFragmentManager(),true);
+
         reciclador.setAdapter(adaptador);
 
         return view;

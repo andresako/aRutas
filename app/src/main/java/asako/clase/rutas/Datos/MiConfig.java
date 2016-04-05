@@ -6,26 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import asako.clase.rutas.Clases.Historial;
-import asako.clase.rutas.Clases.Lugar;
+import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.Clases.Ruta;
 
 public class MiConfig {
 
-    private Lugar pSalida;
-    private List<Lugar> listaPuntos;
+    private Punto pSalida;
+    private List<Punto> listaPuntos;
 
     // Datos dummy
-    public static Lugar SALIDA;
-    public static List<Lugar> LISTA_PUNTOS = new ArrayList<>();
+    public static Punto SALIDA;
+    public static List<Punto> LISTA_PUNTOS = new ArrayList<>();
     public static List<Ruta> LISTA_RUTAS = new ArrayList<>();
     public static List<Historial> LISTA_HISTORIAL = new ArrayList<>();
 
     static{
-        SALIDA = new Lugar("Salida", new LatLng(38.423, -0.396));
+        SALIDA = new Punto("Salida", new LatLng(38.423, -0.396));
 
-        LISTA_PUNTOS.add(new Lugar("Punto 1", new LatLng(38.367, -0.501)));
-        LISTA_PUNTOS.add(new Lugar("Punto 2", new LatLng(38.369, -0.479)));
-        LISTA_PUNTOS.add(new Lugar("Punto 3", new LatLng(38.344, -0.507)));
+        LISTA_PUNTOS.add(new Punto("Punto 1", new LatLng(38.367, -0.501)));
+        LISTA_PUNTOS.add(new Punto("Punto 2", new LatLng(38.369, -0.479)));
+        LISTA_PUNTOS.add(new Punto("Punto 3", new LatLng(38.344, -0.507)));
 
         LISTA_PUNTOS.get(0).setDetalles("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ");
 

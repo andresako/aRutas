@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/espacio_normal_3"
-        android:paddingTop="@dimen/espacio_normal_2"
+        android:layout_marginTop="@dimen/espacio_normal_2"
         android:text="@string/etiqueta_punto_salida"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
