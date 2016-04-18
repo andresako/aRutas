@@ -17,8 +17,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+
 import asako.clase.rutas.Clases.Punto;
-import asako.clase.rutas.Datos.MiConfig;
+import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -28,6 +30,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int INITIAL_REQUEST = 1337;
     private static final int LOCATION_REQUEST = INITIAL_REQUEST + 3;
 
+    private MiConfig datos;
+
     private GoogleMap mMap;
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -35,10 +39,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        datos = Login.mc;
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
@@ -59,17 +63,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private boolean hasPermission(String perm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return (PackageManager.PERMISSION_GRANTED == checkSelfPermission(perm));
-        } else {
-            return true;
-        }
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (PackageManager.PERMISSION_GRANTED == checkSelfPermission(perm));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -80,13 +82,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //DUMMY DATOS
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Punto puntos : MiConfig.LISTA_PUNTOS) {
-            mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNombre()));
-            builder.include(puntos.getPosicion());
+        try {
+            for (Punto puntos : datos.HASH_PUNTOS.values()) {
+                mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNomPosicion(getBaseContext())));
+                builder.include(puntos.getPosicion());
+            }
+            mMap.addMarker(new MarkerOptions().position(datos.getSalida().getPosicion()).title(datos.getSalida().getNombre()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        mMap.addMarker(new MarkerOptions().position(MiConfig.SALIDA.getPosicion()).title(MiConfig.SALIDA.getNombre()));
-
-        builder.include(MiConfig.SALIDA.getPosicion());
+        builder.include(datos.getSalida().getPosicion());
         LatLngBounds bounds = builder.build();
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
 

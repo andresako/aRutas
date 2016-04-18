@@ -22,32 +22,26 @@ public class FragmentoCuenta extends Fragment {
     private AppBarLayout appBar;
     private TabLayout tabs;
     private ViewPager viewPager;
+    private View padre;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmento_cuenta, container, false);
 
         if (savedInstanceState == null) {
-
-            insertarTabs(container);
-
+            padre = (View) container.getParent();
             viewPager = (ViewPager) view.findViewById(R.id.pager);
-            poblarViewPager(viewPager);
-            tabs.setupWithViewPager(viewPager);
         }
-
         return view;
     }
 
-    private void insertarTabs(ViewGroup container) {
-        View padre = (View) container.getParent();
+    private void insertarTabs() {
         appBar = (AppBarLayout) padre.findViewById(R.id.appbar);
-        tabs = new TabLayout(getActivity());
+        tabs = (TabLayout) padre.findViewById(R.id.tab_layout);
         tabs.setTabTextColors(Color.parseColor("#FFFFFF"), Color.parseColor("#FFFFFF"));
-        appBar.addView(tabs);
+        tabs.setVisibility(View.VISIBLE);
     }
-
-    private void poblarViewPager(ViewPager viewPager) {
+    private void poblarViewPager() {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
         adapter.addFragment(new FragmentoPerfil(), getString(R.string.titulo_tab_perfil));
         adapter.addFragment(new FragmentoHistorial(), getString(R.string.titulo_tab_historial));
@@ -55,8 +49,16 @@ public class FragmentoCuenta extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        insertarTabs();
+        poblarViewPager();
+        tabs.setupWithViewPager(viewPager);
+        super.onResume();
+    }
+
+    @Override
     public void onDestroyView() {
-        appBar.removeView(tabs);
+        tabs.setVisibility(View.GONE);
         super.onDestroyView();
     }
 

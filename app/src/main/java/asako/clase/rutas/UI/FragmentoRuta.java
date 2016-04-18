@@ -3,15 +3,20 @@ package asako.clase.rutas.UI;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import asako.clase.rutas.Clases.AdaptadorRuta;
+import asako.clase.rutas.Tools.AdaptadorRuta;
 import asako.clase.rutas.Clases.Historial;
 import asako.clase.rutas.R;
 
@@ -19,8 +24,9 @@ public class FragmentoRuta extends Fragment {
 
     private Historial ht;
     private LinearLayoutManager linearLayout;
-    private AppBarLayout appBar;
+    private ActionBar appBar;
     private DrawerLayout mDrawer;
+    private AppBarLayout appBarLayout;
 
     public FragmentoRuta() {
     }
@@ -28,10 +34,10 @@ public class FragmentoRuta extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragmento_ruta, container, false);
+        setHasOptionsMenu(true);
 
-        View padre = (View) container.getParent();
-        appBar = (AppBarLayout) padre.findViewById(R.id.appbar);
-        appBar.setVisibility(View.GONE);
+        appBar = ((PantallaInicio) getActivity()).getSupportActionBar();
+        appBar.setHomeAsUpIndicator(R.drawable.back);
 
         mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer_layout);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -63,9 +69,28 @@ public class FragmentoRuta extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().getSupportFragmentManager().popBackStack();
+                mDrawer.closeDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        appBar.setVisibility(View.VISIBLE);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        appBar.setHomeAsUpIndicator(R.drawable.drawer_toggle);
+        if(appBarLayout != null)appBarLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_borrar, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

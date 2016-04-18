@@ -1,4 +1,4 @@
-package asako.clase.rutas.Clases;
+package asako.clase.rutas.Tools;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import asako.clase.rutas.Clases.Punto;
+import asako.clase.rutas.Clases.Ruta;
 import asako.clase.rutas.R;
 
 public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder>{

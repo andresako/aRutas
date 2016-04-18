@@ -5,11 +5,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import asako.clase.rutas.Clases.AdaptadorHistorial;
-import asako.clase.rutas.Datos.MiConfig;
+import java.util.ArrayList;
+
+import asako.clase.rutas.Tools.AdaptadorHistorial;
+import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
 
 public class FragmentoInicio extends Fragment {
@@ -19,18 +23,29 @@ public class FragmentoInicio extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragmento_inicio, container, false);
+
+        setHasOptionsMenu(true);
+
+        PantallaInicio pa = (PantallaInicio)getActivity();
+        MiConfig datos = pa.datos;
 
         RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(layoutManager);
 
-        AdaptadorHistorial adaptador = new AdaptadorHistorial(MiConfig.LISTA_HISTORIAL, getFragmentManager());
+        AdaptadorHistorial adaptador = new AdaptadorHistorial(new ArrayList<>(datos.HASH_HISTORIAL.values()), getFragmentManager());
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
 }

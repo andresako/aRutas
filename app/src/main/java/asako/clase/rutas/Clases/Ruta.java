@@ -1,9 +1,10 @@
 package asako.clase.rutas.Clases;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ruta {
+public class Ruta implements Serializable{
     private String titulo;
     private int tiempo = 0;
     private int distancia = 0;
@@ -16,11 +17,13 @@ public class Ruta {
         this.titulo = titulo;
     }
 
-    public Ruta(String titulo, int tiempo, int distancia, List<Punto> listaLugaresVisitados) {
+    public Ruta(String titulo, int distancia, List<Punto> listaLugaresVisitados) {
         this.titulo = titulo;
-        this.tiempo = tiempo;
         this.distancia = distancia;
         this.listaLugaresVisitados = listaLugaresVisitados;
+        for (Punto pt : listaLugaresVisitados){
+            //this.tiempo =+ pt.getTiempoMedio();
+        }
     }
 
     public String getTitulo() {

@@ -28,5 +28,4 @@
             android:icon="@drawable/configuracion"
             android:title="@string/TAG_configuracion" />
     </group>
-
 </menu>

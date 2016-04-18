@@ -1,4 +1,4 @@
-package asako.clase.rutas.Clases;
+package asako.clase.rutas.Tools;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.R;
 import asako.clase.rutas.UI.FragmentoPunto;
 

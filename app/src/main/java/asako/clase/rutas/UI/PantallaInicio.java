@@ -3,6 +3,8 @@ package asako.clase.rutas.UI;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,20 +14,29 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
 
 public class PantallaInicio extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private FragmentManager fragmentManager;
+    public MiConfig datos;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        datos = MiConfig.getConfig();
+        if (datos == null) System.out.println("MEC!");
         setContentView(R.layout.activity_pantalla_inicio);
 
         fragmentManager = getSupportFragmentManager();
@@ -33,6 +44,7 @@ public class PantallaInicio extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
         if (navigationView != null) {
             prepararDrawer(navigationView);
@@ -51,16 +63,29 @@ public class PantallaInicio extends AppCompatActivity {
     }
 
     private void prepararDrawer(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        seleccionarItem(menuItem);
-                        drawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                seleccionarItem(menuItem);
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+        LinearLayout llOff = (LinearLayout) findViewById(R.id.llOff);
+        if (llOff != null) {
+            llOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putBoolean("recordarContra", false);
+                    edit.putString("password", "");
+                    edit.apply();
+                    finish();
+                    startActivity(new Intent(PantallaInicio.this, Login.class));
+                }
+            });
+        }
     }
 
     private void seleccionarItem(MenuItem itemDrawer) {
@@ -111,7 +136,7 @@ public class PantallaInicio extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,24 +144,44 @@ public class PantallaInicio extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() != 0 && fragmentManager.findFragmentByTag("puntoActivo") != null) {
+            if (((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).editado) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
+                alert.setTitle("Quiere guardar los cambios?");
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                ((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarDatos();
+                                fragmentManager.popBackStackImmediate();
+                            }
+                        }
+                );
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {fragmentManager.popBackStackImmediate();}
+                        }
+                );
+                alert.show();
+            }
+            else {
+                fragmentManager.popBackStackImmediate();
+            }
 
+        }
+        else {
             AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
-            alert.setTitle("Seguro que quiere salir de la edicion??");
-
+            alert.setTitle("Quiere salir de la apicación?");
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    fragmentManager.popBackStackImmediate();
-                }
-            });
-
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            finish();
+                        }
+                    }
+            );
             alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //Do nothing
+                        }
+                    }
+            );
             alert.show();
-
-
-            Log.d("BackStack count:", fragmentManager.getBackStackEntryCount() + "");
-        } else super.onBackPressed();
+        }
     }
 }
+
