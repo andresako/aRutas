@@ -1,0 +1,22 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dee4ee">
+
+    <ExpandableListView
+        android:id="@+id/rutasLista"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/espacio_normal_2"
+        android:groupIndicator="@null">
+
+    </ExpandableListView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addPunto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/espacio_normal_1"
+        android:src="@drawable/add"/>
+</FrameLayout>

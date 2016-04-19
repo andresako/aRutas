@@ -163,13 +163,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                         mc.setConfig(mc);
 
-                        Thread.sleep(2000);
                         return true;
                     } else {
                         Log.d("Fallo al logear!", json.getString(TAG_RESUTLADO_DESCRIPCION));
                         return false;
                     }
-                } catch (JSONException | InterruptedException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     return false;
                 }

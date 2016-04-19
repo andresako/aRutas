@@ -1,6 +1,5 @@
 package asako.clase.rutas.UI;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;

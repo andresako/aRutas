@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import asako.clase.rutas.Clases.Historial;
@@ -50,9 +51,9 @@ public class MiConfig implements Serializable {
     static JSONObject jObj = null;
     private static MiConfig MC;
     private final Context context;
-    public HashMap<Integer, Punto> HASH_PUNTOS = new HashMap<>();
-    public HashMap<Integer, Ruta> HASH_RUTAS = new HashMap<>();
-    public HashMap<Integer, Historial> HASH_HISTORIAL = new HashMap<>();
+    public LinkedHashMap<Integer, Punto> HASH_PUNTOS = new LinkedHashMap<>();
+    public LinkedHashMap<Integer, Ruta> HASH_RUTAS = new LinkedHashMap<>();
+    public LinkedHashMap<Integer, Historial> HASH_HISTORIAL = new LinkedHashMap<>();
     private Punto SALIDA = null;
 
     public MiConfig(Context cntx) {
@@ -121,6 +122,10 @@ public class MiConfig implements Serializable {
         return jObj;
     }
 
+    public List<Ruta> getListaRutas() {
+        return new ArrayList<Ruta>(HASH_RUTAS.values());
+    }
+
     private class rellenarDatos extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -168,8 +173,11 @@ public class MiConfig implements Serializable {
                     List<Punto> listaCt = new ArrayList<>();
                     for (int j = 0; j < puntos.length(); j++) {
                         JSONObject rp = puntos.getJSONObject(j);
-                        Punto pt = HASH_PUNTOS.get(rp.getInt("ID"));
-                        //pt.setTiempoMedio(rp.getInt("tiempo"));
+                        Punto pt ;
+                        pt = (HASH_PUNTOS.get(rp.getInt("ID")));
+                        if (rp.getString("tiempo") != null && rp.getInt("tiempo") != 0){
+                            pt.setTiempoMedio(rp.getInt("tiempo"));
+                        }
                         listaCt.add(pt);
                     }
                     Ruta ctR = new Ruta(titulo, 0, listaCt);

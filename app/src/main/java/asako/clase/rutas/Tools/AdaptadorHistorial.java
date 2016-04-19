@@ -38,15 +38,12 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
         }
     }
 
-    public AdaptadorHistorial() {
-    }
-
     public AdaptadorHistorial(List<Historial> listaHistoriales, FragmentManager FM) {
         this.listaHistoriales = listaHistoriales;
         this.fragmentManager = FM;
     }
 
-    public void AddNewViaje(Historial ht) {
+    public void AddNewSalida(Historial ht) {
         listaHistoriales.add(0, ht);
         notifyItemInserted(0);
     }

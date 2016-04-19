@@ -23,12 +23,12 @@ public class FragmentoInicio extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        PantallaInicio pa = (PantallaInicio)getActivity();
+        MiConfig datos = pa.datos;
+
         View view = inflater.inflate(R.layout.fragmento_inicio, container, false);
 
         setHasOptionsMenu(true);
-
-        PantallaInicio pa = (PantallaInicio)getActivity();
-        MiConfig datos = pa.datos;
 
         RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

@@ -32,11 +32,10 @@ public class PantallaInicio extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-
         datos = MiConfig.getConfig();
-        if (datos == null) System.out.println("MEC!");
+        super.onCreate(savedInstanceState);
+
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_pantalla_inicio);
 
         fragmentManager = getSupportFragmentManager();
@@ -101,6 +100,7 @@ public class PantallaInicio extends AppCompatActivity {
                 break;
 
             case R.id.item_rutas:
+                fragmentoGenerico = new FragmentoRutas();
                 break;
 
             case R.id.item_cuenta:

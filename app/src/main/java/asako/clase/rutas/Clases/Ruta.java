@@ -10,20 +10,15 @@ public class Ruta implements Serializable{
     private int distancia = 0;
     private List<Punto> listaLugaresVisitados = new ArrayList<>();
 
-    public Ruta() {
-    }
-
-    public Ruta(String titulo) {
-        this.titulo = titulo;
-    }
-
     public Ruta(String titulo, int distancia, List<Punto> listaLugaresVisitados) {
         this.titulo = titulo;
         this.distancia = distancia;
         this.listaLugaresVisitados = listaLugaresVisitados;
         for (Punto pt : listaLugaresVisitados){
-            //this.tiempo =+ pt.getTiempoMedio();
+            this.tiempo += pt.getTiempoMedio();
         }
+
+        System.out.println(titulo + " total " + this.tiempo);
     }
 
     public String getTitulo() {
