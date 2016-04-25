@@ -49,7 +49,7 @@ public class FragmentoPuntos extends Fragment {
             public void onClick(View v) {
                 Punto ctPnt = new Punto();
                 Bundle args = new Bundle();
-                args.putSerializable("punto", ctPnt);
+                args.putParcelable("punto", ctPnt);
                 Fragment fg = new FragmentoPunto();
                 fg.setArguments(args);
 

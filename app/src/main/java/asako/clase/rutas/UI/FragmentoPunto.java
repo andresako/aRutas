@@ -28,7 +28,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
 
     private TextView nombre;
     private TextView direccion;
-    private TextView tiempo;
     private TextView detalles;
 
     private final FragmentManager fragmentManager;
@@ -53,33 +52,27 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         // Textos editables
         nombre = (TextView) v.findViewById(R.id.texto_nombre);
         direccion = (TextView) v.findViewById(R.id.texto_direccion);
-        tiempo = (TextView) v.findViewById(R.id.texto_tiempo);
         detalles = (TextView) v.findViewById(R.id.texto_detalles);
         nombre.setOnClickListener(this);
         direccion.setOnClickListener(this);
-        tiempo.setOnClickListener(this);
         detalles.setOnClickListener(this);
 
         //poder hacer click en los demás items tambien
         v.findViewById(R.id.texto_nombreT).setOnClickListener(this);
         v.findViewById(R.id.texto_direccionT).setOnClickListener(this);
-        v.findViewById(R.id.texto_tiempoT).setOnClickListener(this);
         v.findViewById(R.id.texto_detallesT).setOnClickListener(this);
         v.findViewById(R.id.texto_nombreI).setOnClickListener(this);
         v.findViewById(R.id.texto_direccionI).setOnClickListener(this);
-        v.findViewById(R.id.texto_tiempoI).setOnClickListener(this);
         v.findViewById(R.id.texto_detallesI).setOnClickListener(this);
 
         //Rellenando datos
         if (!punto.getNombre().equals("")) {
             nombre.setText(punto.getNombre());
             direccion.setText(punto.getPosicion().toString());
-            tiempo.setText(punto.getTiempoMedio() + " minutos");
             detalles.setText(punto.getDetalles());
         } else {
             nombre.setHint("Introduce nombre del nuevo punto");
             direccion.setHint("Introduce direccion");
-            tiempo.setHint("Tiempo empleado?");
             detalles.setHint("Algun detalle más?");
         }
 
@@ -135,13 +128,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = direccion;
                 break;
-            case R.id.texto_tiempo:
-            case R.id.texto_tiempoI:
-            case R.id.texto_tiempoT:
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                input.setSingleLine(true);
-                tvct = tiempo;
-                break;
             case R.id.texto_detalles:
             case R.id.texto_detallesI:
             case R.id.texto_detallesT:
@@ -155,7 +141,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (input.getText().toString().trim().length() != 0) {
-                    System.out.println(input.getText());
                     finalTvct.setText(input.getText());
                     editado = true;
                 }

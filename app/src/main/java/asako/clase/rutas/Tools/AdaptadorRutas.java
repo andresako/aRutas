@@ -2,6 +2,7 @@ package asako.clase.rutas.Tools;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,26 +14,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import asako.clase.rutas.Clases.Ruta;
 import asako.clase.rutas.R;
 
 public class AdaptadorRutas extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> NombresRutas;
+    private List<Ruta> NombresRutas;
     private HashMap<String, List<String>> PuntosdeRutas;
 
-    public AdaptadorRutas(Context context, MiConfig datos){
+    public AdaptadorRutas(Context context, MiConfig datos) {
 
         this.context = context;
         NombresRutas = new ArrayList<>();
         PuntosdeRutas = new HashMap<>();
-        for (int x = 0; x < datos.getListaRutas().size();x++) {
-            NombresRutas.add(datos.getListaRutas().get(x).getTitulo());
+        for (int x = 0; x < datos.getListaRutas().size(); x++) {
+            NombresRutas.add(datos.getListaRutas().get(x));
             ArrayList<String> puntos = new ArrayList<>();
-            for (int y = 0; y < datos.getListaRutas().get(x).getListaLugaresVisitados().size(); y++){
+            for (int y = 0; y < datos.getListaRutas().get(x).getListaLugaresVisitados().size(); y++) {
                 puntos.add(datos.getListaRutas().get(x).getListaLugaresVisitados().get(y).getNombre());
             }
-            PuntosdeRutas.put(NombresRutas.get(x),puntos);
+            PuntosdeRutas.put(NombresRutas.get(x).getTitulo(), puntos);
         }
     }
 
@@ -43,7 +45,7 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.PuntosdeRutas.get(NombresRutas.get(groupPosition)).size();
+        return this.PuntosdeRutas.get(NombresRutas.get(groupPosition).getTitulo()).size();
     }
 
     @Override
@@ -53,7 +55,7 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.PuntosdeRutas.get(NombresRutas.get(groupPosition)).get(childPosition);
+        return this.PuntosdeRutas.get(NombresRutas.get(groupPosition).getTitulo()).get(childPosition);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        String headerTitle = ((Ruta)getGroup(groupPosition)).getTitulo();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -110,5 +112,23 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    public void addRuta(Ruta ruta) {
+
+        NombresRutas.add(ruta);
+        ArrayList<String> puntos = new ArrayList<>();
+        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
+            puntos.add(ruta.getListaLugaresVisitados().get(x).getNombre());
+        }
+        PuntosdeRutas.put(ruta.getTitulo(), puntos);
+        this.notifyDataSetChanged();
+    }
+
+    public void remove(int position) {
+        NombresRutas.remove(position);
+        this.notifyDataSetChanged();
+    }
+
+
 }
 

@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,7 +33,7 @@ import asako.clase.rutas.Clases.Historial;
 import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.Clases.Ruta;
 
-public class MiConfig implements Serializable {
+public class MiConfig  implements Serializable{
 
     private static final String URL_GENERICA = "http://overant.es/Andres/";
     private static final String URL_PUNTOS = "puntos.php";
@@ -59,7 +58,6 @@ public class MiConfig implements Serializable {
     public MiConfig(Context cntx) {
         this.context = cntx;
         new rellenarDatos().execute();
-
     }
 
     public static MiConfig getConfig() {
@@ -126,6 +124,19 @@ public class MiConfig implements Serializable {
         return new ArrayList<Ruta>(HASH_RUTAS.values());
     }
 
+    public ArrayList<String> getNombrePuntos() {
+        ArrayList<String> lista = new ArrayList<>();
+        for (Punto p : HASH_PUNTOS.values()) {
+            lista.add(p.getNombre());
+        }
+
+        return lista;
+    }
+
+    public ArrayList<Punto> getListaPuntos() {
+        return new ArrayList<>(HASH_PUNTOS.values());
+    }
+
     private class rellenarDatos extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -173,14 +184,17 @@ public class MiConfig implements Serializable {
                     List<Punto> listaCt = new ArrayList<>();
                     for (int j = 0; j < puntos.length(); j++) {
                         JSONObject rp = puntos.getJSONObject(j);
-                        Punto pt ;
+                        Punto pt;
                         pt = (HASH_PUNTOS.get(rp.getInt("ID")));
-                        if (rp.getString("tiempo") != null && rp.getInt("tiempo") != 0){
-                            pt.setTiempoMedio(rp.getInt("tiempo"));
+                        Punto pt2 = new Punto(id, pt.getNombre(), pt.getPosicion());
+                        pt2.setDetalles(pt.getDetalles());
+                        if (rp.getString("tiempo") != null && rp.getInt("tiempo") != 0) {
+                            pt2.setTiempoMedio(rp.getInt("tiempo"));
                         }
-                        listaCt.add(pt);
+                        listaCt.add(pt2);
                     }
                     Ruta ctR = new Ruta(titulo, 0, listaCt);
+                    ctR.setID(id);
                     HASH_RUTAS.put(id, ctR);
 
                 }

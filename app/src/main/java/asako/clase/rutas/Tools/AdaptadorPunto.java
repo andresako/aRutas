@@ -35,7 +35,6 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
         public CardView cardView;
         public TextView nombre;
         public TextView posicion;
-        public TextView tiempo;
         public TextView detalles;
         public ImageView imgDetalles;
         boolean editable;
@@ -45,7 +44,6 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
             cardView = (CardView)v;
             nombre = (TextView) v.findViewById(R.id.texto_nombre);
             posicion = (TextView) v.findViewById(R.id.texto_direccion);
-            tiempo = (TextView) v.findViewById(R.id.texto_tiempo);
             detalles = (TextView) v.findViewById(R.id.texto_detalles);
             imgDetalles = (ImageView) v.findViewById(R.id.imageView4);
             this.editable = editable;
@@ -67,7 +65,6 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
 
         Punto punto = listaLugares.get(position);
         holder.nombre.setText(punto.getNombre());
-        holder.tiempo.setText(punto.getTiempoMedio()+" min");
         holder.posicion.setText(punto.getPosicion().toString());
 
 
@@ -96,7 +93,7 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
         int pos = (int) v.getTag();
 
         Bundle args = new Bundle();
-        args.putSerializable("punto", listaLugares.get(pos));
+        args.putParcelable("punto", listaLugares.get(pos));
         Fragment fg = new FragmentoPunto();
         fg.setArguments(args);
 

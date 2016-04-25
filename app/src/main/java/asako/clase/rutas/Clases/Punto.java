@@ -9,15 +9,13 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-public class Punto implements Serializable , Parcelable{
+public class Punto implements Parcelable {
 
     private int ID = 0;
     private String nombre = "";
-    private String nomPosicion;
     private LatLng posicion;
     private String detalles = "";
     private int tiempoMedio = 0;
@@ -35,8 +33,8 @@ public class Punto implements Serializable , Parcelable{
     }
 
     protected Punto(Parcel in) {
+        ID = in.readInt();
         nombre = in.readString();
-        nomPosicion = in.readString();
         posicion = in.readParcelable(LatLng.class.getClassLoader());
         detalles = in.readString();
         tiempoMedio = in.readInt();
@@ -53,6 +51,10 @@ public class Punto implements Serializable , Parcelable{
             return new Punto[size];
         }
     };
+
+    public int getID(){
+        return this.ID;
+    }
 
     public String getNombre() {
         return nombre;
@@ -99,10 +101,10 @@ public class Punto implements Serializable , Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ID);
         dest.writeString(nombre);
         dest.writeParcelable(posicion, flags);
         dest.writeString(detalles);
         dest.writeInt(tiempoMedio);
     }
-
 }
