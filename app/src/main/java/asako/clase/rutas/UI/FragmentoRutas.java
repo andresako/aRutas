@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,14 +15,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import asako.clase.rutas.Clases.Ruta;
 import asako.clase.rutas.R;
 import asako.clase.rutas.Tools.AdaptadorRutas;
+import asako.clase.rutas.Tools.JsonParser;
 import asako.clase.rutas.Tools.MiConfig;
 
 public class FragmentoRutas extends Fragment {
 
     private MiConfig MC;
+    private JsonParser jsonParser = new JsonParser();
 
     private ExpandableListView elv;
     private FloatingActionButton fab;
@@ -34,10 +45,10 @@ public class FragmentoRutas extends Fragment {
         View v = inflater.inflate(R.layout.fragmento_rutas_lista, container, false);
         setHasOptionsMenu(true);
 
-        PantallaInicio pa = (PantallaInicio)super.getActivity();
+        PantallaInicio pa = (PantallaInicio) super.getActivity();
         MC = pa.datos;
 
-        AdaptadorRutas rutaAdapter = new AdaptadorRutas(v.getContext(),MC);
+        AdaptadorRutas rutaAdapter = new AdaptadorRutas(v.getContext(), MC);
         elv = (ExpandableListView) v.findViewById(R.id.rutasLista);
         elv.setAdapter(rutaAdapter);
         elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -50,10 +61,10 @@ public class FragmentoRutas extends Fragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AdaptadorRutas yourAdapter = (AdaptadorRutas) ((ExpandableListView)parent).getExpandableListAdapter();
+                        AdaptadorRutas yourAdapter = (AdaptadorRutas) ((ExpandableListView) parent).getExpandableListAdapter();
                         Ruta r = (Ruta) yourAdapter.getGroup(position);
                         yourAdapter.remove(position);
-                        borrarRuta(r);
+                        new borrarRuta().execute(r);
                         yourAdapter.notifyDataSetChanged();
                     }
                 });
@@ -82,23 +93,51 @@ public class FragmentoRutas extends Fragment {
         return v;
     }
 
-    private void borrarRuta(Ruta r) {
-        Log.d("Borrando ruta:", r.getID()+"");
-        MC.HASH_RUTAS.remove(r.getID());
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 111) {
-            if(resultCode == Activity.RESULT_OK){
-                Ruta result= data.getParcelableExtra("result");
+            if (resultCode == Activity.RESULT_OK) {
+                Ruta result = data.getParcelableExtra("result");
                 AdaptadorRutas AR = (AdaptadorRutas) elv.getExpandableListAdapter();
                 AR.addRuta(result);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+        }
+    }
+
+    class borrarRuta extends AsyncTask<Ruta, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Ruta... arg) {
+            int success;
+            boolean res = false;
+
+            Log.d("Borrando ruta:", arg[0].getID() + "");
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("idRuta", arg[0].getID() + ""));
+            JSONObject json = jsonParser.peticionHttp("http://overant.es/Andres/rutaBorrar.php", "POST", params);
+
+            try {
+                success = json.getInt("Resultado");
+
+                if (success == 1) {
+                    MC.HASH_RUTAS.remove(arg[0].getID());
+                    res = true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                res = false;
             }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Log.d("Borrado correctamente!", "");
+            }
+            super.onPostExecute(result);
         }
     }
 

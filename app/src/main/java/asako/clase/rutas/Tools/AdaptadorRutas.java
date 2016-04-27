@@ -129,6 +129,5 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
         this.notifyDataSetChanged();
     }
 
-
 }
 

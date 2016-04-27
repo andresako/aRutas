@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/del_item"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:id="@+id/save_item"
+        android:icon="@android:drawable/ic_menu_save"
         app:showAsAction="ifRoom"
         android:orderInCategory="10"
-        android:title="Borrar">
+        android:title="Guardar">
     </item>
 </menu>

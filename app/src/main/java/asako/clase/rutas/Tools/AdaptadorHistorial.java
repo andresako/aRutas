@@ -28,7 +28,6 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
         public TextView titulo;
         public TextView fecha;
         public ImageButton boton;
-        public int pos;
 
         public ViewHolder(View v) {
             super(v);

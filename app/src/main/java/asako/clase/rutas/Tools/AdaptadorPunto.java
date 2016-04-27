@@ -48,8 +48,6 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
             imgDetalles = (ImageView) v.findViewById(R.id.imageView4);
             this.editable = editable;
         }
-
-
     }
 
     @Override

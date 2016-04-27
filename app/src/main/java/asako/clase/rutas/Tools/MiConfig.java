@@ -221,6 +221,5 @@ public class MiConfig  implements Serializable{
             }
             return true;
         }
-
     }
 }

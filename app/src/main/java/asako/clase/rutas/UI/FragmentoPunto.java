@@ -1,8 +1,12 @@
 package asako.clase.rutas.UI;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -11,8 +15,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,22 +25,33 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.R;
+import asako.clase.rutas.Tools.JsonParser;
+import asako.clase.rutas.Tools.MiConfig;
 
 public class FragmentoPunto extends Fragment implements View.OnClickListener {
 
+    private final FragmentManager fragmentManager;
+    public boolean editado = false;
     private TextView nombre;
     private TextView direccion;
     private TextView detalles;
-
-    private final FragmentManager fragmentManager;
     private Punto punto;
     private Toolbar toolbar;
     private DrawerLayout mDrawer;
     private ActionBar appBar;
-
-    public boolean editado = false;
 
     public FragmentoPunto() {
         fragmentManager = getFragmentManager();
@@ -94,7 +109,9 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 getActivity().onBackPressed();
                 mDrawer.closeDrawer(GravityCompat.START);
                 return true;
-
+            case R.id.save_item:
+                new guardarPunto().execute();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -109,6 +126,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         TextView tvct = null;
+        boolean editar = false;
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Editar el campo");
         // Set an EditText view to get user input
@@ -121,52 +139,152 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 input.setSingleLine(true);
                 tvct = nombre;
+                editar = true;
                 break;
             case R.id.texto_direccion:
             case R.id.texto_direccionI:
             case R.id.texto_direccionT:
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = direccion;
+                editar = true;
                 break;
             case R.id.texto_detalles:
             case R.id.texto_detallesI:
             case R.id.texto_detallesT:
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = detalles;
+                editar = true;
                 break;
         }
-
-        alert.setView(input);
-        final TextView finalTvct = tvct;
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                if (input.getText().toString().trim().length() != 0) {
-                    finalTvct.setText(input.getText());
-                    editado = true;
+        if (editar) {
+            alert.setView(input);
+            final TextView finalTvct = tvct;
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    if (input.getText().toString().trim().length() != 0) {
+                        finalTvct.setText(input.getText());
+                        editado = true;
+                    }
                 }
-            }
-        });
+            });
 
-        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Cancelado.
-            }
-        });
-        alert.show();
-    }
-
-    public void guardarDatos() {
-        if (punto.getNombre().equals("")) {          //Nuevo punto
-
-        } else {                                      //Modificacion
-
+            alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Cancelado.
+                }
+            });
+            alert.show();
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_borrar, menu);
+        inflater.inflate(R.menu.menu_guardar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    class guardarPunto extends AsyncTask<Void, Void, Boolean> {
+        ProgressDialog pDialog;
+        JsonParser jsonParser = new JsonParser();
+        JSONObject json;
+        List<NameValuePair> params;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Guardando...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... arg) {
+            String status;
+            boolean res = false;
+            String titulo = null;
+            String detalle = null;
+            LatLng latlng = null;
+
+            //  Check localizacion
+            String url = "https://maps.googleapis.com/maps/api/geocode/json";
+            params = new ArrayList<>();
+            params.add(new BasicNameValuePair("address", direccion.getText().toString()));
+
+            json = jsonParser.peticionHttp(url, "GET", params);
+
+            try {
+                status = json.getString("status");
+
+                if (status.equals("OK")) {
+                    JSONArray result = (JSONArray) json.get("results");
+                    JSONObject obj = (JSONObject) result.get(0);
+                    JSONObject geometry = (JSONObject) obj.get("geometry");
+                    JSONObject location = (JSONObject) geometry.get("location");
+                    double lat = location.getDouble("lat");
+                    double lng = location.getDouble("lng");
+                    latlng = new LatLng(lat, lng);
+                    Log.d("latLng", lat + " " + lng);
+                } else {
+                    Log.d("Pos", "no hay LatLng");
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                res = false;
+            }
+
+            //  Check Nombre y detalles
+            if (!nombre.getText().equals("")) {
+                titulo = nombre.getText().toString();
+                detalle = detalles.getText().toString();
+
+            } else {
+                Log.d("nombre", "no hay nombre");
+            }
+
+            //  Intento guardar el puntos
+            if (latlng != null && titulo != null) {
+                params = new ArrayList<>();
+                params.add(new BasicNameValuePair("idUser", sp.getString("id_user", "0")));
+                params.add(new BasicNameValuePair("nombre", titulo));
+                params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
+                params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
+                params.add(new BasicNameValuePair("detalles", detalle));
+                try {
+                    json = jsonParser.peticionHttp("http://overant.es/Andres/puntoNuevo.php", "POST", params);
+
+                    if (json.getInt("Resultado") == 1) {
+
+                        Punto pt = new Punto(
+                                json.getInt("ID"),
+                                json.getString("nombre"),
+                                new LatLng(json.getDouble("lat"),json.getDouble("lng")));
+                        pt.setDetalles(json.getString("detalles"));
+                        MiConfig mc = MiConfig.getConfig();
+                        mc.HASH_PUNTOS.put(pt.getID(),pt);
+                        res = true;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    res = false;
+                }
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Log.d("Punto", "Guardado correctamente!");
+            }
+            pDialog.dismiss();
+            super.onPostExecute(result);
+        }
+    }
+
 }

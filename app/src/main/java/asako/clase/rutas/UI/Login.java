@@ -108,7 +108,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
-
         }
 
         @Override

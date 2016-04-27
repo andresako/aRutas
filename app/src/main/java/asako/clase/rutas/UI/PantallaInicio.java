@@ -149,7 +149,7 @@ public class PantallaInicio extends AppCompatActivity {
                 alert.setTitle("Quiere guardar los cambios?");
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                ((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarDatos();
+                                //((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarPunto();
                                 fragmentManager.popBackStackImmediate();
                             }
                         }
