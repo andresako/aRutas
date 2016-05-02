@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        datos = Login.mc;
+        datos = MiConfig.get();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -82,15 +82,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //DUMMY DATOS
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        try {
-            for (Punto puntos : datos.HASH_PUNTOS.values()) {
+
+            for (Punto puntos : datos.getListaPuntos()) {
                 mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNomPosicion(getBaseContext())));
                 builder.include(puntos.getPosicion());
             }
             mMap.addMarker(new MarkerOptions().position(datos.getSalida().getPosicion()).title(datos.getSalida().getNombre()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         builder.include(datos.getSalida().getPosicion());
         LatLngBounds bounds = builder.build();
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);

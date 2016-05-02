@@ -30,21 +30,19 @@ public class FragmentoPerfil extends Fragment {
         setHasOptionsMenu(true);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        MiConfig mc = MiConfig.getConfig();
+        MiConfig mc = MiConfig.get();
 
-        tNombre = (TextView)v.findViewById(R.id.texto_nombre);
-        tUsuario = (TextView)v.findViewById(R.id.texto_email);
-        tSalida = (TextView)v.findViewById(R.id.texto_salida);
+        tNombre = (TextView) v.findViewById(R.id.texto_nombre);
+        tUsuario = (TextView) v.findViewById(R.id.texto_email);
+        tSalida = (TextView) v.findViewById(R.id.texto_salida);
 
         tNombre.setText(sp.getString("nombre", "Dummy") + " " + sp.getString("apellidos", "Dummy"));
         tUsuario.setText(sp.getString("username", "Dummy"));
         String salida = "Sin punto de salida";
-        if (mc.isSalidaSet()){
-            try {
-                salida = mc.getSalida().getNomPosicion(getActivity());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (mc.isSalidaSet()) {
+
+            salida = mc.getSalida().getNomPosicion(getActivity());
+
             tSalida.setText(salida);
         }
 

@@ -83,7 +83,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         //Rellenando datos
         if (!punto.getNombre().equals("")) {
             nombre.setText(punto.getNombre());
-            direccion.setText(punto.getPosicion().toString());
+            direccion.setText(punto.getNomPosicion(getContext()));
             detalles.setText(punto.getDetalles());
         } else {
             nombre.setHint("Introduce nombre del nuevo punto");
@@ -262,10 +262,10 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                         Punto pt = new Punto(
                                 json.getInt("ID"),
                                 json.getString("nombre"),
-                                new LatLng(json.getDouble("lat"),json.getDouble("lng")));
+                                new LatLng(json.getDouble("lat"), json.getDouble("lng")));
                         pt.setDetalles(json.getString("detalles"));
-                        MiConfig mc = MiConfig.getConfig();
-                        mc.HASH_PUNTOS.put(pt.getID(),pt);
+                        MiConfig mc = MiConfig.get();
+                        mc.addPunto(pt.getID(), pt);
                         res = true;
                     }
                 } catch (JSONException e) {

@@ -60,7 +60,7 @@ public class FragmentoPuntos extends Fragment {
             }
         });
 
-        AdaptadorPunto adaptador = new AdaptadorPunto(new ArrayList<>(datos.HASH_PUNTOS.values()), getFragmentManager(),true);
+        AdaptadorPunto adaptador = new AdaptadorPunto(datos.getListaPuntos(), getFragmentManager(),true);
 
         reciclador.setAdapter(adaptador);
 

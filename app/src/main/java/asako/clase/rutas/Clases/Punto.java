@@ -77,12 +77,17 @@ public class Punto implements Parcelable {
         return this.tiempoMedio;
     }
 
-    public String getNomPosicion(Context context) throws IOException {
+    public String getNomPosicion(Context context)  {
         String pos;
 
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-        List<Address> addresses  = geocoder.getFromLocation(posicion.latitude,posicion.longitude, 1);
+        List<Address> addresses  = null;
+        try {
+            addresses = geocoder.getFromLocation(posicion.latitude,posicion.longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String city = addresses.get(0).getLocality();
         String state = addresses.get(0).getAdminArea();

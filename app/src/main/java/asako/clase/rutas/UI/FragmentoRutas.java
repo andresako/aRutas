@@ -122,7 +122,7 @@ public class FragmentoRutas extends Fragment {
                 success = json.getInt("Resultado");
 
                 if (success == 1) {
-                    MC.HASH_RUTAS.remove(arg[0].getID());
+                    MC.removeRuta(arg[0].getID());
                     res = true;
                 }
             } catch (JSONException e) {

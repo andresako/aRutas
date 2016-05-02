@@ -54,7 +54,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_ruta);
 
-        MC = MiConfig.getConfig();
+        MC = MiConfig.get();
         listaPuntos = new ArrayList<>();
 
         fecha = (TextView) findViewById(R.id.salidaFecha);
@@ -229,7 +229,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
                 success = json.getInt("Resultado");
                 if (success == 1) {
                     Log.d("Ruta guardada!", json.toString());
-                    MC.HASH_RUTAS.put(json.getInt("idRuta"), newRuta);
+                    MC.addRuta(json.getInt("idRuta"), newRuta);
                     finish();
                     return json.getString("Desc");
                 } else {

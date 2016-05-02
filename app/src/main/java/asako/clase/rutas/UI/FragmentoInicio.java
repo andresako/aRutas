@@ -27,14 +27,13 @@ public class FragmentoInicio extends Fragment {
         MiConfig datos = pa.datos;
 
         View view = inflater.inflate(R.layout.fragmento_inicio, container, false);
-
         setHasOptionsMenu(true);
 
         RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(layoutManager);
 
-        AdaptadorHistorial adaptador = new AdaptadorHistorial(new ArrayList<>(datos.HASH_HISTORIAL.values()), getFragmentManager());
+        AdaptadorHistorial adaptador = new AdaptadorHistorial(datos.getHistorial(), getFragmentManager());
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 

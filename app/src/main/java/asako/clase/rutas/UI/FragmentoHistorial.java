@@ -35,7 +35,7 @@ public class FragmentoHistorial extends Fragment {
         linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
 
-        AdaptadorHistorial adaptador = new AdaptadorHistorial(new ArrayList<>(datos.HASH_HISTORIAL.values()), getFragmentManager());
+        AdaptadorHistorial adaptador = new AdaptadorHistorial(datos.getHistorial(), getFragmentManager());
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 

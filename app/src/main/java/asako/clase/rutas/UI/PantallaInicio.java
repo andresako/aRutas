@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,7 @@ public class PantallaInicio extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        datos = MiConfig.getConfig();
+        datos = MiConfig.get();
         super.onCreate(savedInstanceState);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -49,6 +50,7 @@ public class PantallaInicio extends AppCompatActivity {
             prepararDrawer(navigationView);
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
+
     }
 
     private void agregarToolbar() {
@@ -155,17 +157,17 @@ public class PantallaInicio extends AppCompatActivity {
                         }
                 );
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {fragmentManager.popBackStackImmediate();}
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                fragmentManager.popBackStackImmediate();
+                            }
                         }
                 );
                 alert.show();
-            }
-            else {
+            } else {
                 fragmentManager.popBackStackImmediate();
             }
 
-        }
-        else {
+        } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
             alert.setTitle("Quiere salir de la apicación?");
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
