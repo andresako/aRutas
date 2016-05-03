@@ -16,8 +16,9 @@ public class Punto implements Parcelable {
 
     private int ID = 0;
     private String nombre = "";
+    private String descripcion = "";
     private LatLng posicion;
-    private String detalles = "";
+    private String comentarios = "";
     private int tiempoMedio = 0;
 
     public Punto() {
@@ -35,8 +36,9 @@ public class Punto implements Parcelable {
     protected Punto(Parcel in) {
         ID = in.readInt();
         nombre = in.readString();
+        descripcion = in.readString();
         posicion = in.readParcelable(LatLng.class.getClassLoader());
-        detalles = in.readString();
+        comentarios = in.readString();
         tiempoMedio = in.readInt();
     }
 
@@ -63,11 +65,18 @@ public class Punto implements Parcelable {
         return posicion;
     }
 
-    public void setDetalles(String detalles){
-        this.detalles = detalles;
+    public String getDescripcion() {
+        return descripcion;
     }
-    public String getDetalles(){
-        return this.detalles;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setComentarios(String detalles){
+        this.comentarios = detalles;
+    }
+    public String getComentarios(){
+        return this.comentarios;
     }
 
     public void setTiempoMedio(int tiempoMedio){
@@ -108,8 +117,9 @@ public class Punto implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(ID);
         dest.writeString(nombre);
+        dest.writeString(descripcion);
         dest.writeParcelable(posicion, flags);
-        dest.writeString(detalles);
+        dest.writeString(comentarios);
         dest.writeInt(tiempoMedio);
     }
 }

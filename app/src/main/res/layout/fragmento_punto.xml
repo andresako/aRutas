@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/espacio_normal_2"
         android:paddingBottom="@dimen/espacio_normal_3"
-        android:text="Otros detalles"
+        android:text="Etiqueta"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <android.support.v7.widget.CardView
@@ -122,7 +122,7 @@
                 android:layout_marginRight="@dimen/espacio_normal_2"
                 android:layout_row="2"
                 android:layout_rowSpan="2"
-                android:src="@drawable/razon" />
+                android:src="@drawable/tag" />
 
             <TextView
                 android:id="@+id/texto_detallesT"
@@ -130,7 +130,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="1"
                 android:layout_row="2"
-                android:text="Detalles :"
+                android:text="Etiqueta :"
                 android:textStyle="bold" />
 
             <TextView

@@ -245,11 +245,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     String nombre = p.getString("nombre");
                     Double lat = p.getDouble("lat");
                     Double lng = p.getDouble("lng");
-                    String det = p.getString("detalles");
+                    String des = p.getString("descripcion");
                     LatLng pos = new LatLng(lat, lng);
 
                     Punto ctP = new Punto(id, nombre, pos);
-                    ctP.setDetalles(det);
+                    if (!des.equals("")) ctP.setDescripcion(des);
                     mc.addPunto(id, ctP);
 
                 }
@@ -273,7 +273,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         Punto pt;
                         pt = (mc.getPunto(rp.getInt("ID")));
                         Punto pt2 = new Punto(id, pt.getNombre(), pt.getPosicion());
-                        pt2.setDetalles(pt.getDetalles());
+                        pt2.setDescripcion(pt.getDescripcion());
                         if (rp.getString("tiempo") != null && rp.getInt("tiempo") != 0) {
                             pt2.setTiempoMedio(rp.getInt("tiempo"));
                         }

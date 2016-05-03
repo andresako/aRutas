@@ -26,7 +26,7 @@ public class FragmentoRuta extends Fragment {
     private LinearLayoutManager linearLayout;
     private ActionBar appBar;
     private DrawerLayout mDrawer;
-    private AppBarLayout appBarLayout;
+    //private AppBarLayout appBarLayout;
 
     public FragmentoRuta() {
     }
@@ -84,7 +84,7 @@ public class FragmentoRuta extends Fragment {
         super.onDestroyView();
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         appBar.setHomeAsUpIndicator(R.drawable.drawer_toggle);
-        if(appBarLayout != null)appBarLayout.setVisibility(View.VISIBLE);
+        //if(appBarLayout != null)appBarLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

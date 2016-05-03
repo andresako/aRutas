@@ -11,17 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ruta implements Parcelable {
-    public static final Creator<Ruta> CREATOR = new Creator<Ruta>() {
-        @Override
-        public Ruta createFromParcel(Parcel in) {
-            return new Ruta(in);
-        }
-
-        @Override
-        public Ruta[] newArray(int size) {
-            return new Ruta[size];
-        }
-    };
     private String titulo;
     private int ID = 0;
     private int tiempo = 0;
@@ -48,6 +37,18 @@ public class Ruta implements Parcelable {
         distancia = in.readInt();
         in.readTypedList(listaLugaresVisitados, Punto.CREATOR);
     }
+
+    public static final Creator<Ruta> CREATOR = new Creator<Ruta>() {
+        @Override
+        public Ruta createFromParcel(Parcel in) {
+            return new Ruta(in);
+        }
+
+        @Override
+        public Ruta[] newArray(int size) {
+            return new Ruta[size];
+        }
+    };
 
     public int getID() {
         return ID;

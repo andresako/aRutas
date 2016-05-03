@@ -9,9 +9,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +45,6 @@ public class PantallaNuevaRuta extends AppCompatActivity {
 
     private ArrayList<String> listaPuntos;
 
-    private TextView fecha, distancia, tiempo;
     private Button botonAdd, botonGuardar;
     private ListView lv;
     private Ruta newRuta = new Ruta(0);
@@ -57,18 +58,10 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         MC = MiConfig.get();
         listaPuntos = new ArrayList<>();
 
-        fecha = (TextView) findViewById(R.id.salidaFecha);
-        distancia = (TextView) findViewById(R.id.salidaDistancia);
-        tiempo = (TextView) findViewById(R.id.salidaTiempo);
         lv = (ListView) findViewById(R.id.salidaLista);
         botonAdd = (Button) findViewById(R.id.salidaAddBoton);
         botonGuardar = (Button) findViewById(R.id.salidaGuardarBoton);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yy");
-        String currentDateandTime = sdf.format(new Date());
-        fecha.setText(currentDateandTime);
-        distancia.setText("0 Kms");
-        tiempo.setText("0:00h");
 
         lv.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
@@ -77,68 +70,50 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         botonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PantallaNuevaRuta.this);
+
                 final ArrayAdapter<String> adp = new ArrayAdapter<>(PantallaNuevaRuta.this,
-                        android.R.layout.simple_spinner_item, MC.getNombrePuntos());
-                adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        android.R.layout.simple_list_item_1, MC.getNombrePuntos());
 
                 final TextView tv = new TextView(PantallaNuevaRuta.this);
                 tv.setText("Seleccione el punto:");
 
-                final Spinner sp = new Spinner(PantallaNuevaRuta.this);
+                final ListView sp = new ListView(PantallaNuevaRuta.this);
                 sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                adp.add("---Vacio---");
+                        LinearLayout.LayoutParams.MATCH_PARENT));
                 sp.setAdapter(adp);
-                sp.setSelection(adp.getCount() - 1);
-
-                final TextView tv2 = new TextView(PantallaNuevaRuta.this);
-                tv2.setText("Tiempo estimado?");
-
-                final EditText et = new EditText(PantallaNuevaRuta.this);
-                et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                et.setHint("Minutos");
-                et.setSingleLine(true);
 
                 LinearLayout ll = new LinearLayout(PantallaNuevaRuta.this);
                 ll.setOrientation(LinearLayout.VERTICAL);
                 ll.addView(tv);
                 ll.addView(sp);
-                ll.addView(tv2);
-                ll.addView(et);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(PantallaNuevaRuta.this);
                 builder.setView(ll);
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Aceptado.
-                        if (!sp.getSelectedItem().toString().equals("---Vacio---")) {
-                            System.out.println(sp.getSelectedItemPosition() + " Seleccionado.");
-                            int tiempom = 0;
-                            if (!"".equals(et.getText().toString()))
-                                tiempom = Integer.valueOf(et.getText().toString());
-
-                            ArrayAdapter<String> adp2 = (ArrayAdapter<String>) lv.getAdapter();
-
-                            listaPuntos.add(sp.getSelectedItem().toString() + ", " + tiempom + " min.");
-                            Punto ctp1 = MC.getListaPuntos().get(sp.getSelectedItemPosition());
-                            Punto ctp2 = new Punto(ctp1.getID(), ctp1.getNombre(), ctp1.getPosicion());
-                            ctp2.setTiempoMedio(tiempom);
-
-                            newRuta.addLugar(ctp2);
-                            newRuta.addTiempo(tiempom);
-                            tiempo.setText(newRuta.getTiempo() + " min");
-                            adp2.notifyDataSetChanged();
-                        }
-                    }
-                });
 
                 builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Cancelado.
-
                     }
                 });
-                builder.create().show();
+                final AlertDialog alert = builder.create();
+                sp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        System.out.println(position + " Seleccionado.");
+
+                        ArrayAdapter<String> adp2 = (ArrayAdapter<String>) lv.getAdapter();
+
+                        listaPuntos.add(sp.getItemAtPosition(position).toString());
+                        Punto ctp1 = MC.getListaPuntos().get(position);
+                        Punto ctp2 = new Punto(ctp1.getID(), ctp1.getNombre(), ctp1.getPosicion());
+
+                        newRuta.addLugar(ctp2);
+                        adp2.notifyDataSetChanged();
+                        alert.dismiss();
+                    }
+                });
+
+                alert.show();
             }
         });
 

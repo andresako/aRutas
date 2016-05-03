@@ -47,7 +47,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
     public boolean editado = false;
     private TextView nombre;
     private TextView direccion;
-    private TextView detalles;
+    private TextView descripcion;
     private Punto punto;
     private Toolbar toolbar;
     private DrawerLayout mDrawer;
@@ -67,10 +67,10 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         // Textos editables
         nombre = (TextView) v.findViewById(R.id.texto_nombre);
         direccion = (TextView) v.findViewById(R.id.texto_direccion);
-        detalles = (TextView) v.findViewById(R.id.texto_detalles);
+        descripcion = (TextView) v.findViewById(R.id.texto_detalles);
         nombre.setOnClickListener(this);
         direccion.setOnClickListener(this);
-        detalles.setOnClickListener(this);
+        descripcion.setOnClickListener(this);
 
         //poder hacer click en los demás items tambien
         v.findViewById(R.id.texto_nombreT).setOnClickListener(this);
@@ -84,11 +84,11 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         if (!punto.getNombre().equals("")) {
             nombre.setText(punto.getNombre());
             direccion.setText(punto.getNomPosicion(getContext()));
-            detalles.setText(punto.getDetalles());
+            descripcion.setText(punto.getDescripcion());
         } else {
             nombre.setHint("Introduce nombre del nuevo punto");
             direccion.setHint("Introduce direccion");
-            detalles.setHint("Algun detalle más?");
+            descripcion.setHint("Algun nombre para recordarlo?");
         }
 
         toolbar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
@@ -152,7 +152,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             case R.id.texto_detallesI:
             case R.id.texto_detallesT:
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                tvct = detalles;
+                tvct = descripcion;
                 editar = true;
                 break;
         }
@@ -240,7 +240,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             //  Check Nombre y detalles
             if (!nombre.getText().equals("")) {
                 titulo = nombre.getText().toString();
-                detalle = detalles.getText().toString();
+                detalle = descripcion.getText().toString();
 
             } else {
                 Log.d("nombre", "no hay nombre");
@@ -253,7 +253,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 params.add(new BasicNameValuePair("nombre", titulo));
                 params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
                 params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
-                params.add(new BasicNameValuePair("detalles", detalle));
+                params.add(new BasicNameValuePair("descripcion", detalle));
                 try {
                     json = jsonParser.peticionHttp("http://overant.es/Andres/puntoNuevo.php", "POST", params);
 
@@ -263,7 +263,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                                 json.getInt("ID"),
                                 json.getString("nombre"),
                                 new LatLng(json.getDouble("lat"), json.getDouble("lng")));
-                        pt.setDetalles(json.getString("detalles"));
+                        pt.setDescripcion(json.getString("descripcion"));
                         MiConfig mc = MiConfig.get();
                         mc.addPunto(pt.getID(), pt);
                         res = true;

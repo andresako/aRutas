@@ -32,10 +32,16 @@ public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder
         holder.direccion.setText(punto.getPosicion().toString());
         if (punto.getTiempoMedio() != 0) {
             holder.tiempo.setText(punto.getTiempoMedio() + "minutos");
-            holder.tiempo.setVisibility(View.VISIBLE);
-            holder.tiempoF.setVisibility(View.VISIBLE);
         }
-        holder.detalle.setText(punto.getDetalles());
+        else{
+            holder.tiempo.setVisibility(View.GONE);
+            holder.tiempoF.setVisibility(View.GONE);
+        }
+        if (!punto.getDescripcion().equals("") && !punto.getDescripcion().equalsIgnoreCase("null")){
+            holder.descripcion.setText(punto.getDescripcion());
+        }else{
+            holder.descripcion.setHint("Ingrese nombre para recordar");
+        }
     }
 
     @Override
@@ -49,14 +55,14 @@ public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder
         public TextView direccion;
         public TextView tiempo;
         public ImageView tiempoF;
-        public TextView detalle;
+        public TextView descripcion;
 
         public ViewHolder(View v) {
             super(v);
             nombre = (TextView) v.findViewById(R.id.texto_nombre);
             direccion = (TextView) v.findViewById(R.id.texto_direccion);
             tiempo = (TextView) v.findViewById(R.id.texto_tiempo);
-            detalle = (TextView) v.findViewById(R.id.texto_detalles);
+            descripcion = (TextView) v.findViewById(R.id.texto_detalles);
             tiempoF = (ImageView) v.findViewById(R.id.imageView3);
         }
     }

@@ -5,97 +5,38 @@
     android:layout_height="match_parent"
     android:background="#dee4ee"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="@dimen/espacio_normal_1"
     tools:context=".UI.PantallaNuevaRuta">
 
-    <LinearLayout
-        android:id="@+id/llPri"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="2dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/etiqueta_fecha"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/distancia_total"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/tiempo_empleado"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llSec"
+        android:id="@+id/llBotones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llPri"
-        android:layout_marginBottom="@dimen/espacio_normal_2"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/salidaFecha"
-            android:layout_width="0dp"
+        <Button
+            android:id="@+id/salidaAddBoton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="1-Enero" />
+            android:text="Añadir punto"/>
 
-        <TextView
-            android:id="@+id/salidaDistancia"
-            android:layout_width="0dp"
+        <Button
+            android:id="@+id/salidaGuardarBoton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="3" />
+            android:text="Guardar y salir"/>
 
-        <TextView
-            android:id="@+id/salidaTiempo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="1:45h" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/salidaAddBoton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Añadir punto"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
-
-    <Button
-        android:id="@+id/salidaGuardarBoton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar y salir"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
 
     <ListView
         android:id="@+id/salidaLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llSec"
-        android:layout_above="@+id/salidaBoton"
+        android:layout_above="@+id/llBotones"
+        android:layout_alignParentTop="true"
         android:scrollbars="vertical"/>
 
 

@@ -35,8 +35,10 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
         public CardView cardView;
         public TextView nombre;
         public TextView posicion;
-        public TextView detalles;
+        public TextView descripcion;
+        public TextView tiempo;
         public ImageView imgDetalles;
+        public ImageView imgTiempo;
         boolean editable;
 
         public ViewHolder(View v, boolean editable) {
@@ -44,8 +46,10 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
             cardView = (CardView)v;
             nombre = (TextView) v.findViewById(R.id.texto_nombre);
             posicion = (TextView) v.findViewById(R.id.texto_direccion);
-            detalles = (TextView) v.findViewById(R.id.texto_detalles);
+            descripcion = (TextView) v.findViewById(R.id.texto_detalles);
+            tiempo = (TextView) v.findViewById(R.id.texto_tiempo);
             imgDetalles = (ImageView) v.findViewById(R.id.imageView4);
+            imgTiempo = (ImageView) v.findViewById(R.id.imageView3);
             this.editable = editable;
         }
     }
@@ -65,13 +69,20 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
         holder.nombre.setText(punto.getNombre());
         holder.posicion.setText(punto.getPosicion().toString());
 
-
-        if (!punto.getDetalles().equals("")){
-            holder.detalles.setText(punto.getDetalles());
+        if (!punto.getDescripcion().equals("") && !punto.getDescripcion().equalsIgnoreCase("null")){
+            holder.descripcion.setText(punto.getDescripcion());
         }else{
-            holder.detalles.setVisibility(View.GONE);
+            holder.descripcion.setVisibility(View.GONE);
             holder.imgDetalles.setVisibility(View.GONE);
         }
+
+        if (punto.getTiempoMedio() != 0){
+            holder.tiempo.setText(punto.getTiempoMedio());
+        }else{
+            holder.tiempo.setVisibility(View.GONE);
+            holder.imgTiempo.setVisibility(View.GONE);
+        }
+
         if (holder.editable){
             holder.cardView.setTag(position);
             holder.cardView.setOnClickListener(this);
