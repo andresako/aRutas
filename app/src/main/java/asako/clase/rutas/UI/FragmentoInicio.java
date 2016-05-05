@@ -54,7 +54,7 @@ public class FragmentoInicio extends Fragment {
                 //fg.setArguments(args);
 
                 FragmentTransaction fT = fragmentManager.beginTransaction();
-                fT.replace(R.id.contenedor_principal, fg);
+                fT.replace(R.id.contenedor_principal, fg,"salidaActiva");
                 fT.addToBackStack(null);
                 fT.commit();
             }

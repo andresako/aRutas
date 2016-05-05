@@ -144,8 +144,30 @@ public class PantallaInicio extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (fragmentManager.getBackStackEntryCount() != 0 && fragmentManager.findFragmentByTag("puntoActivo") != null) {
-            if (((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).editado) {
+        if (fragmentManager.getBackStackEntryCount() != 0) {
+            if (fragmentManager.findFragmentByTag("puntoActivo") != null) {
+                if (((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).editado) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
+                    alert.setTitle("Quiere guardar los cambios?");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    //((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarPunto();
+                                    fragmentManager.popBackStackImmediate();
+                                }
+                            }
+                    );
+                    alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    fragmentManager.popBackStackImmediate();
+                                }
+                            }
+                    );
+                    alert.show();
+                } else {
+                    fragmentManager.popBackStackImmediate();
+                }
+
+            } else if (fragmentManager.findFragmentByTag("salidaActiva") != null) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
                 alert.setTitle("Quiere guardar los cambios?");
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -162,10 +184,8 @@ public class PantallaInicio extends AppCompatActivity {
                         }
                 );
                 alert.show();
-            } else {
-                fragmentManager.popBackStackImmediate();
-            }
 
+            }
         } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
             alert.setTitle("Quiere salir de la apicación?");

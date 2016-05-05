@@ -53,6 +53,8 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
     private DrawerLayout mDrawer;
     private ActionBar appBar;
 
+    private String sNombre, sDireccion, sDescripcion = "";
+
     public FragmentoPunto() {
         fragmentManager = getFragmentManager();
     }
@@ -139,6 +141,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 input.setSingleLine(true);
                 tvct = nombre;
+                sNombre = input.getText().toString();
                 editar = true;
                 break;
             case R.id.texto_direccion:
@@ -146,6 +149,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             case R.id.texto_direccionT:
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = direccion;
+                sDireccion = input.getText().toString();
                 editar = true;
                 break;
             case R.id.texto_detalles:
@@ -153,6 +157,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             case R.id.texto_detallesT:
                 input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = descripcion;
+                sDescripcion = input.getText().toString();
                 editar = true;
                 break;
         }
@@ -212,7 +217,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             //  Check localizacion
             String url = "https://maps.googleapis.com/maps/api/geocode/json";
             params = new ArrayList<>();
-            params.add(new BasicNameValuePair("address", direccion.getText().toString()));
+            params.add(new BasicNameValuePair("address", sDireccion));
 
             json = jsonParser.peticionHttp(url, "GET", params);
 
@@ -238,9 +243,9 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             }
 
             //  Check Nombre y detalles
-            if (!nombre.getText().equals("")) {
-                titulo = nombre.getText().toString();
-                detalle = descripcion.getText().toString();
+            if (!sNombre.equals("")) {
+                titulo = sNombre;
+                detalle = sDescripcion;
 
             } else {
                 Log.d("nombre", "no hay nombre");
