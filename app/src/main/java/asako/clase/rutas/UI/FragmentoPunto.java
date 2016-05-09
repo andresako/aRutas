@@ -62,7 +62,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragmento_punto, container, false);
-        setHasOptionsMenu(true);
 
         punto = (Punto) getArguments().get("punto");
 

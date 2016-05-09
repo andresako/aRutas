@@ -98,7 +98,7 @@ public class AdaptadorPunto extends RecyclerView.Adapter<AdaptadorPunto.ViewHold
 
     @Override
     public void onClick(View v) {
-         Log.d("CardView", "Editable" + v.getTag());
+        Log.d("CardView", "Editable" + v.getTag());
         int pos = (int) v.getTag();
 
         Bundle args = new Bundle();

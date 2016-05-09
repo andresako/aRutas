@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_ticket_contenedor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/espacio_normal_3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#dee4ee"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/item_salida_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="titulo" />
+
+        <ImageButton
+            android:id="@+id/item_salida_detalles"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/detalle_red"/>
+
+        <ImageButton
+            android:id="@+id/item_salida_tiempo"
+            android:layout_marginLeft="@dimen/espacio_normal_1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/clock_red"/>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

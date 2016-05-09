@@ -18,8 +18,6 @@ import asako.clase.rutas.R;
 
 public class FragmentoHistorial extends Fragment {
 
-    private LinearLayoutManager linearLayout;
-
     public FragmentoHistorial() {
     }
 
@@ -32,7 +30,7 @@ public class FragmentoHistorial extends Fragment {
         setHasOptionsMenu(true);
 
         RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
-        linearLayout = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
 
         AdaptadorHistorial adaptador = new AdaptadorHistorial(datos.getHistorial(), getFragmentManager());
