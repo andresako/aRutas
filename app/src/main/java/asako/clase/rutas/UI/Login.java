@@ -168,9 +168,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         edit.putString(TAG_NOMBRE, json.getString(TAG_NOMBRE));
                         edit.putString(TAG_APELLIDOS, json.getString(TAG_APELLIDOS));
 
+
+                        Log.d(TAG_LOG, "añadida salida "+json.getBoolean("salida"));
                         if (json.getBoolean("salida")) {
                             LatLng ltg = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
                             ctp = new Punto(json.getInt("id"), "salida", ltg);
+                            edit.putString("lat", json.getString("lat"));
+                            edit.putString("lng", json.getString("lng"));
                         } else {
                             edit.putString("lat", "");
                             edit.putString("lng", "");
