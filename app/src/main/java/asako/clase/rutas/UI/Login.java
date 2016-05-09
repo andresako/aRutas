@@ -112,6 +112,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
+                sUser = user.getText().toString();
+                sPass = pass.getText().toString();
+                bRecordar = cbRecordar.isChecked();
                 new IntentoLogeo().execute();
                 break;
 
@@ -267,7 +270,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     int id = r.getInt("ID");
                     String titulo = r.getString("titulo");
                     JSONArray puntos = r.getJSONArray(TAG_PUNTOS);
-                    List<Punto> listaCt = new ArrayList<>();
+                    ArrayList<Punto> listaCt = new ArrayList<>();
                     for (int j = 0; j < puntos.length(); j++) {
                         JSONObject rp = puntos.getJSONObject(j);
                         Punto pt;
@@ -276,6 +279,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         pt2.setDescripcion(pt.getDescripcion());
                         if (rp.getString("tiempo") != null && rp.getInt("tiempo") != 0) {
                             pt2.setTiempoMedio(rp.getInt("tiempo"));
+                        }
+                        if (rp.getString("detalles") != null && !rp.getString("detalles").equals("null")) {
+                            pt2.setComentarios(rp.getString("detalles"));
+                            Log.d("Login", "comentarios encontrados");
                         }
                         listaCt.add(pt2);
                     }

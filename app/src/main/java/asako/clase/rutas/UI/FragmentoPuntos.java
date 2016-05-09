@@ -61,7 +61,6 @@ public class FragmentoPuntos extends Fragment {
         });
 
         AdaptadorPunto adaptador = new AdaptadorPunto(datos.getListaPuntos(), getFragmentManager(),true);
-
         reciclador.setAdapter(adaptador);
 
         return view;

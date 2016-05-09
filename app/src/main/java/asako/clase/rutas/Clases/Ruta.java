@@ -15,13 +15,13 @@ public class Ruta implements Parcelable {
     private int ID = 0;
     private int tiempo = 0;
     private int distancia = 0;
-    private List<Punto> listaLugaresVisitados = new ArrayList<>();
+    private ArrayList<Punto> listaLugaresVisitados = new ArrayList<>();
 
     public Ruta(int id) {
         this.ID = id;
     }
 
-    public Ruta(String titulo, int distancia, List<Punto> listaLugaresVisitados) {
+    public Ruta(String titulo, int distancia, ArrayList<Punto> listaLugaresVisitados) {
         this.titulo = titulo;
         this.distancia = distancia;
         this.listaLugaresVisitados = listaLugaresVisitados;
@@ -53,7 +53,6 @@ public class Ruta implements Parcelable {
     public int getID() {
         return ID;
     }
-
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -61,7 +60,6 @@ public class Ruta implements Parcelable {
     public String getTitulo() {
         return titulo;
     }
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -69,23 +67,20 @@ public class Ruta implements Parcelable {
     public int getTiempo() {
         return tiempo;
     }
-
     public int getDistancia() {
         return distancia;
     }
 
-    public List<Punto> getListaLugaresVisitados() {
+    public ArrayList<Punto> getListaLugaresVisitados() {
         return listaLugaresVisitados;
     }
 
     public void addTiempo(int tiempo) {
         this.tiempo += tiempo;
     }
-
     public void addDistancia(int distancia) {
         this.distancia += distancia;
     }
-
     public void addLugar(Punto punto) {
         this.listaLugaresVisitados.add(punto);
     }
@@ -94,7 +89,6 @@ public class Ruta implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(titulo);

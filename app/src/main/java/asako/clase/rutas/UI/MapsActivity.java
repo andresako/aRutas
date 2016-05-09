@@ -31,7 +31,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_REQUEST = INITIAL_REQUEST + 3;
 
     private MiConfig datos;
-
     private GoogleMap mMap;
 
     @TargetApi(Build.VERSION_CODES.M)
