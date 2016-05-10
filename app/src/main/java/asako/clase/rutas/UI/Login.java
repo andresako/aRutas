@@ -47,10 +47,7 @@ import asako.clase.rutas.Tools.MiConfig;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
-    private String TAG_LOG = "Login";
-
     private static final String LOGIN_URL = "http://overant.es/Andres/login.php";
-
     // TAGS de respuestas del JSON php Script;
     private static final String TAG_USER = "username";
     private static final String TAG_PASS = "password";
@@ -59,6 +56,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG_RESULTADO = "Resultado";
     private static final String TAG_RESUTLADO_DESCRIPCION = "Desc";
     private static final String TAG_ID_USER = "id_user";
+    private String TAG_LOG = "Login";
     private MiConfig mc;
     private EditText user, pass;
     private CheckBox cbRecordar;
@@ -123,6 +121,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    private void msgError(String msg) {
+        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     class IntentoLogeo extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -169,7 +172,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         edit.putString(TAG_APELLIDOS, json.getString(TAG_APELLIDOS));
 
 
-                        Log.d(TAG_LOG, "añadida salida "+json.getBoolean("salida"));
+                        Log.d(TAG_LOG, "añadida salida " + json.getBoolean("salida"));
                         if (json.getBoolean("salida")) {
                             LatLng ltg = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
                             ctp = new Punto(json.getInt("id"), "salida", ltg);
@@ -212,10 +215,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         List<NameValuePair> params = new ArrayList<>();
 
-        String URL_GENERICA = "http://overant.es/Andres/";
-        String URL_PUNTOS = "puntos.php";
-        String URL_RUTAS = "rutas.php";
-        String URL_HISTORIAL = "historial.php";
+        String URL = "http://overant.es/Andres/acciones.php";
+        int CARGAR_PUNTOS = 1;
+        int CARGAR_RUTAS = 2;
+        int CARGAR_HISTORIAL = 3;
 
         String TAG_PUNTOS = "Puntos";
         String TAG_RUTAS = "Rutas";
@@ -237,9 +240,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             String ID = sp.getString(TAG_ID_USER, "0");
             params.add(new BasicNameValuePair("user", ID));
 
-            JSONObject joPuntos = recogerDatosDe(URL_GENERICA + URL_PUNTOS);
-            JSONObject joRutas = recogerDatosDe(URL_GENERICA + URL_RUTAS);
-            JSONObject joHistorial = recogerDatosDe(URL_GENERICA + URL_HISTORIAL);
+            JSONObject joPuntos = recogerDatosDe(URL, CARGAR_PUNTOS);
+            JSONObject joRutas = recogerDatosDe(URL, CARGAR_RUTAS);
+            JSONObject joHistorial = recogerDatosDe(URL, CARGAR_HISTORIAL);
 
             Log.d(TAG_LOG, "Cargando puntos");
             //Rellenando PUNTOS
@@ -331,12 +334,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         }
 
-        private JSONObject recogerDatosDe(String url) {
+        private JSONObject recogerDatosDe(String url, int accion) {
 
             InputStream is = null;
             String json = "";
             JSONObject jObj = null;
-
+            params.add(new BasicNameValuePair("accion", accion + ""));
             // Pedir y recoger datos
             try {
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -377,10 +380,5 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
 
 
-    }
-
-    private void msgError(String msg) {
-        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

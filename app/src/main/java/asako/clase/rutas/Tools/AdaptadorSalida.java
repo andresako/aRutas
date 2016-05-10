@@ -1,10 +1,16 @@
 package asako.clase.rutas.Tools;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,8 +22,10 @@ import asako.clase.rutas.R;
 public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHolder>{
 
     private final ArrayList<Punto> listaPuntos;
+    private final Context context;
 
-    public AdaptadorSalida(ArrayList<Punto> listaPuntos){
+    public AdaptadorSalida(FragmentActivity activity, ArrayList<Punto> listaPuntos){
+        this.context = activity;
         this.listaPuntos = listaPuntos;
     }
     @Override
@@ -27,7 +35,7 @@ public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Punto p = listaPuntos.get(position);
         Log.d("AdpSalida", "time: "+ p.getTiempoMedio());
         holder.titulo.setText(p.getNombre());
@@ -38,6 +46,51 @@ public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHo
             @Override
             public void onClick(View v) {
 
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Añade detalles");
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                alert.setView(input);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (input.getText().toString().trim().length() != 0) {
+                            listaPuntos.get(position).setComentarios(input.getText().toString());
+                            holder.detalle.setBackgroundResource(R.drawable.detalle_green);
+                        }
+                    }
+                });
+
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Cancelado.
+                    }
+                });
+                alert.show();
+            }
+        });
+        holder.tiempo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Tiempo en este punto");
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                alert.setView(input);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (input.getText().toString().trim().length() != 0) {
+                            listaPuntos.get(position).setTiempoMedio(Integer.parseInt(input.getText().toString()));
+                            holder.tiempo.setBackgroundResource(R.drawable.clock_green);
+                        }
+                    }
+                });
+
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Cancelado.
+                    }
+                });
+                alert.show();
             }
         });
     }

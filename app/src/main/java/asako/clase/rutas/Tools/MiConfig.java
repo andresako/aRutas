@@ -14,7 +14,7 @@ public class MiConfig implements Serializable {
     private static LinkedHashMap<Integer, Ruta> HASH_RUTAS;
     private static LinkedHashMap<Integer, Historial> HASH_HISTORIAL;
     private static Punto SALIDA = null;
-    private LinkedHashMap<Integer, Punto> HASH_PUNTOS;
+    private static LinkedHashMap<Integer, Punto> HASH_PUNTOS;
 
     private MiConfig() {
         HASH_PUNTOS = new LinkedHashMap<>();
@@ -33,10 +33,10 @@ public class MiConfig implements Serializable {
         return SALIDA != null;
     }
     public Punto getSalida() {
-        return this.SALIDA;
+        return SALIDA;
     }
     public void setSalida(Punto pt) {
-        this.SALIDA = pt;
+        SALIDA = pt;
     }
 
     public void addPunto(int id, Punto punto) {
@@ -60,7 +60,14 @@ public class MiConfig implements Serializable {
         HASH_HISTORIAL.put(id, ht);
     }
     public ArrayList<Historial> getHistorial() {
-        return new ArrayList<>(HASH_HISTORIAL.values());
+        ArrayList<Historial> ct = new ArrayList<>();
+        ArrayList<Historial> ct2 = new ArrayList<>(HASH_HISTORIAL.values());
+
+        for(int x = ct2.size()-1; x >= 0;x--){
+            ct.add(ct2.get(x));
+        }
+
+        return ct;
     }
 
     public ArrayList<Ruta> getListaRutas() {

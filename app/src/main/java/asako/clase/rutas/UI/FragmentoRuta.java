@@ -1,7 +1,6 @@
 package asako.clase.rutas.UI;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,9 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import asako.clase.rutas.Tools.AdaptadorRuta;
 import asako.clase.rutas.Clases.Historial;
 import asako.clase.rutas.R;
+import asako.clase.rutas.Tools.AdaptadorRuta;
 
 public class FragmentoRuta extends Fragment {
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -13,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,14 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
+import asako.clase.rutas.Tools.MiConfig;
 
 public class PantallaInicio extends AppCompatActivity {
 
+    public MiConfig datos;
     private DrawerLayout drawerLayout;
     private FragmentManager fragmentManager;
-    public MiConfig datos;
     private SharedPreferences sp;
 
     @Override

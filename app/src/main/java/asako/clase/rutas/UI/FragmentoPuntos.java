@@ -13,12 +13,10 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
-import asako.clase.rutas.Tools.AdaptadorPunto;
 import asako.clase.rutas.Clases.Punto;
-import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
+import asako.clase.rutas.Tools.AdaptadorPunto;
+import asako.clase.rutas.Tools.MiConfig;
 
 public class FragmentoPuntos extends Fragment {
 
@@ -36,7 +34,7 @@ public class FragmentoPuntos extends Fragment {
         View view = inflater.inflate(R.layout.fragmento_puntos, container, false);
         setHasOptionsMenu(true);
 
-        PantallaInicio pa = (PantallaInicio)getActivity();
+        PantallaInicio pa = (PantallaInicio) getActivity();
         datos = pa.datos;
 
         RecyclerView reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
@@ -54,13 +52,13 @@ public class FragmentoPuntos extends Fragment {
                 fg.setArguments(args);
 
                 FragmentTransaction fT = getActivity().getSupportFragmentManager().beginTransaction();
-                fT.replace(R.id.contenedor_principal, fg,"puntoActivo");
+                fT.replace(R.id.contenedor_principal, fg, "puntoActivo");
                 fT.addToBackStack(null);
                 fT.commit();
             }
         });
 
-        AdaptadorPunto adaptador = new AdaptadorPunto(datos.getListaPuntos(), getFragmentManager(),true);
+        AdaptadorPunto adaptador = new AdaptadorPunto(datos.getListaPuntos(), getFragmentManager(), true);
         reciclador.setAdapter(adaptador);
 
         return view;

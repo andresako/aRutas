@@ -115,8 +115,9 @@ public class FragmentoRutas extends Fragment {
             Log.d("Borrando ruta:", arg[0].getID() + "");
 
             List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("accion", "10"));
             params.add(new BasicNameValuePair("idRuta", arg[0].getID() + ""));
-            JSONObject json = jsonParser.peticionHttp("http://overant.es/Andres/rutaBorrar.php", "POST", params);
+            JSONObject json = jsonParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
 
             try {
                 success = json.getInt("Resultado");

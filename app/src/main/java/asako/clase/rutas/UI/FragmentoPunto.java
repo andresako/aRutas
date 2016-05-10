@@ -111,10 +111,19 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 mDrawer.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.save_item:
-                new guardarPunto().execute();
+                if (todoCorrecto()) new guardarPunto().execute();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean todoCorrecto() {
+        if (nombre.getText().equals("") || nombre.getText() == null) return false;
+        if (direccion.getText().equals("") || direccion.getText() == null) return false;
+
+        sNombre = nombre.getText().toString();
+        sDireccion = direccion.getText().toString();
+        return true;
     }
 
     @Override
@@ -250,16 +259,17 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 Log.d("nombre", "no hay nombre");
             }
 
-            //  Intento guardar el puntos
+            //  Intento guardar el punto
             if (latlng != null && titulo != null) {
                 params = new ArrayList<>();
+                params.add(new BasicNameValuePair("accion", "4"));
                 params.add(new BasicNameValuePair("idUser", sp.getString("id_user", "0")));
                 params.add(new BasicNameValuePair("nombre", titulo));
                 params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
                 params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
                 params.add(new BasicNameValuePair("descripcion", detalle));
                 try {
-                    json = jsonParser.peticionHttp("http://overant.es/Andres/puntoNuevo.php", "POST", params);
+                    json = jsonParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
 
                     if (json.getInt("Resultado") == 1) {
 
@@ -285,6 +295,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Log.d("Punto", "Guardado correctamente!");
+                getActivity().onBackPressed();
             }
             pDialog.dismiss();
             super.onPostExecute(result);

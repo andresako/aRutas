@@ -163,7 +163,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
             case 1:
                 returnIntent.putExtra("result", newRuta);
                 setResult(Activity.RESULT_OK, returnIntent);
-
+                Log.d("pntNewR: ", newRuta.toJsonObject().toString());
                 new GuardarRuta().execute();
                 break;
         }
@@ -174,7 +174,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         @Override
         protected String doInBackground(String... args) {
             // Building Parameters
-            String url = "http://overant.es/Andres/rutaNueva.php";
+            String url = "http://overant.es/Andres/acciones.php";
 
             JSONObject obj;
             JsonParser jsonParser = new JsonParser();
@@ -186,6 +186,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
 
             try {
                 //Posting user data to script
+                nameValuePairs.add(new BasicNameValuePair("accion", 5 + ""));
                 nameValuePairs.add(new BasicNameValuePair("user", sp.getString("id_user", "0")));
                 nameValuePairs.add(new BasicNameValuePair("json", obj.toString()));
 

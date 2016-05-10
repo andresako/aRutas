@@ -100,13 +100,18 @@ public class Ruta implements Parcelable {
 
     public JSONObject toJsonObject() {
         JSONObject ct = new JSONObject();
-        JSONObject jarray = new JSONObject();
+        JSONArray jarray = new JSONArray();
         try {
             for (int i = 0; i < this.listaLugaresVisitados.size(); i++) {
-                jarray.put(listaLugaresVisitados.get(i).getID()+"", listaLugaresVisitados.get(i).getTiempoMedio());
+                JSONObject jobj = new JSONObject();
+                jobj.put("tiempo", listaLugaresVisitados.get(i).getTiempoMedio());
+                jobj.put("id",listaLugaresVisitados.get(i).getID());
+                jobj.put("detalles",listaLugaresVisitados.get(i).getComentarios());
+                jarray.put(jobj);
             }
             ct.put("titulo", this.titulo);
-            ct.put("puntos", jarray);
+            ct.put("puntos",jarray);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
