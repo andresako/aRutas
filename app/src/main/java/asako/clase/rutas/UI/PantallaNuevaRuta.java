@@ -50,6 +50,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_ruta);
 
+       // MC = ((PantallaInicio)getBaseContext()).datos;
         MC = MiConfig.get();
         listaPuntos = new ArrayList<>();
 

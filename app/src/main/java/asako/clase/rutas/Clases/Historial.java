@@ -7,19 +7,25 @@ import java.io.Serializable;
 
 public class Historial implements Serializable, Parcelable {
 
+    private int tiempo;
+    private int distancia;
     private String fecha;
     private Ruta ruta;
 
     public Historial() {
     }
 
-    public Historial(Ruta ruta, String fecha) {
+    public Historial(Ruta ruta, String fecha, int distancia, int tiempo) {
         this.ruta = ruta;
         this.fecha = fecha;
+        this.distancia = distancia;
+        this.tiempo = tiempo;
     }
 
     protected Historial(Parcel in) {
         fecha = in.readString();
+        distancia = in.readInt();
+        tiempo = in.readInt();
     }
 
     public static final Creator<Historial> CREATOR = new Creator<Historial>() {
@@ -34,13 +40,10 @@ public class Historial implements Serializable, Parcelable {
         }
     };
 
-    public String getFecha() {
-        return fecha;
-    }
-
-    public Ruta getRuta() {
-        return this.ruta;
-    }
+    public String getFecha() {return fecha;}
+    public int getDistancia(){return this.distancia;}
+    public int getTiempo(){return this.tiempo;}
+    public Ruta getRuta() {return this.ruta;}
 
     @Override
     public int describeContents() {
@@ -50,5 +53,7 @@ public class Historial implements Serializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(fecha);
+        dest.writeInt(distancia);
+        dest.writeInt(tiempo);
     }
 }

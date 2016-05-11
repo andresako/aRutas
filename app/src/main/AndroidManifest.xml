@@ -21,7 +21,7 @@
         <activity
             android:name=".UI.PantallaInicio"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ConNavigationDrawer"></activity>
+            android:theme="@style/Theme.ConNavigationDrawer" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,11 +35,16 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.PantallaNuevaRuta"></activity>
+        <activity
+            android:name=".UI.PantallaNuevaRuta"
+            android:parentActivityName=".UI.PantallaInicio">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.PantallaInicio" />
+        </activity>
     </application>
 
 </manifest>

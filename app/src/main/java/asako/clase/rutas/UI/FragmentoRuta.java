@@ -51,12 +51,12 @@ public class FragmentoRuta extends Fragment {
         reciclador.setAdapter(adaptador);
         reciclador.addItemDecoration(new DecoracionLineaDivisoria(getActivity()));
 
-        int Idist = ht.getRuta().getDistancia() / 1000;
-        int Idist2 = ht.getRuta().getDistancia() % 1000;
+        int Idist = ht.getDistancia() / 1000;
+        int Idist2 = ht.getDistancia() % 1000;
         String Sdist = Idist + "," + Idist2 + " Kms";
 
-        int hours = ht.getRuta().getTiempo() / 60;
-        int minutes = ht.getRuta().getTiempo() % 60;
+        int hours = ht.getTiempo() / 3600;
+        int minutes = (ht.getTiempo() % 3600) / 60;
         String time = hours + ":" + minutes + "h";
 
         ((TextView) v.findViewById(R.id.titulo_historial)).setText(ht.getRuta().getTitulo());

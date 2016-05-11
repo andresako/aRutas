@@ -141,12 +141,12 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         alert.setTitle("Editar el campo");
         // Set an EditText view to get user input
         final EditText input = new EditText(getActivity());
+        input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         switch (v.getId()) {
             case R.id.texto_nombre:
             case R.id.texto_nombreI:
             case R.id.texto_nombreT:
-                input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 input.setSingleLine(true);
                 tvct = nombre;
                 sNombre = input.getText().toString();
@@ -155,7 +155,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             case R.id.texto_direccion:
             case R.id.texto_direccionI:
             case R.id.texto_direccionT:
-                input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = direccion;
                 sDireccion = input.getText().toString();
                 editar = true;
@@ -163,7 +162,6 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             case R.id.texto_detalles:
             case R.id.texto_detallesI:
             case R.id.texto_detallesT:
-                input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 tvct = descripcion;
                 sDescripcion = input.getText().toString();
                 editar = true;

@@ -80,6 +80,7 @@
         card_view:cardUseCompatPadding="true">
 
         <GridLayout
+            android:id="@+id/lSalida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
@@ -87,7 +88,6 @@
             android:rowCount="2">
 
             <ImageView
-                android:id="@+id/icono_password"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="left"

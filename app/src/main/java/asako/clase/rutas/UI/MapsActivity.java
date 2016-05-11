@@ -80,19 +80,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         //DUMMY DATOS
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        LatLngBounds.Builder builder = null;
 
-            for (Punto puntos : datos.getListaPuntos()) {
-                mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNomPosicion(getBaseContext())));
-                builder.include(puntos.getPosicion());
-            }
+        for (Punto puntos : datos.getListaPuntos()) {
+            if (builder == null) builder = new LatLngBounds.Builder();
+            mMap.addMarker(new MarkerOptions().position(puntos.getPosicion()).title(puntos.getNomPosicion(getBaseContext())));
+            builder.include(puntos.getPosicion());
+        }
+        if (datos.isSalidaSet()){
+            if (builder == null) builder = new LatLngBounds.Builder();
             mMap.addMarker(new MarkerOptions().position(datos.getSalida().getPosicion()).title(datos.getSalida().getNombre()));
+            builder.include(datos.getSalida().getPosicion());
+        }
 
-        builder.include(datos.getSalida().getPosicion());
-        LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+        if (builder != null) {
+            LatLngBounds bounds = builder.build();
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
 
-        mMap.moveCamera(cu);
+            mMap.moveCamera(cu);
+        }
 
         if (!canAccessLocation()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

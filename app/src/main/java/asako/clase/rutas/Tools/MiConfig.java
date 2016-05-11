@@ -3,6 +3,7 @@ package asako.clase.rutas.Tools;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import asako.clase.rutas.Clases.Historial;
 import asako.clase.rutas.Clases.Punto;
@@ -61,7 +62,7 @@ public class MiConfig implements Serializable {
     }
     public ArrayList<Historial> getHistorial() {
         ArrayList<Historial> ct = new ArrayList<>();
-        ArrayList<Historial> ct2 = new ArrayList<>(HASH_HISTORIAL.values());
+        LinkedList<Historial> ct2 = new LinkedList<>(HASH_HISTORIAL.values());
 
         for(int x = ct2.size()-1; x >= 0;x--){
             ct.add(ct2.get(x));

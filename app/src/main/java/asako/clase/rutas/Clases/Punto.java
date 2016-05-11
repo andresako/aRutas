@@ -64,6 +64,7 @@ public class Punto implements Parcelable {
     public LatLng getPosicion() {
         return posicion;
     }
+    public void setPosicion(LatLng latLng){this.posicion = latLng;}
 
     public String getDescripcion() {
         return descripcion;

@@ -162,7 +162,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             // Guardar datos para la siguiente
                             edit.putBoolean("recordarContra", true);
                         } else {
-                            sUser = "";
                             sPass = "";
                         }
                         edit.putString(TAG_USER, sUser);
@@ -312,8 +311,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     int id = h.getInt("ID");
                     int id_ruta = h.getInt("ID_ruta");
                     String fecha = h.getString("Fecha");
+                    int distancia = h.getInt("distancia");
+                    int tiempo = h.getInt("tiempo");
 
-                    Historial ctH = new Historial(mc.getRuta(id_ruta), fecha);
+                    Historial ctH = new Historial(mc.getRuta(id_ruta), fecha, distancia, tiempo);
                     mc.addHistorial(id, ctH);
                 }
             } catch (JSONException e) {

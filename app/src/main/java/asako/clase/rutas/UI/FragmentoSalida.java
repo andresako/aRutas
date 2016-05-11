@@ -67,7 +67,8 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
     private SharedPreferences sp;
 
     private TextView tiempo, distancia;
-    private int tiempoTotal, distanciaTotal = 0;
+    public int tiempoRuta, tiempoViaje = 0;
+    private int distanciaTotal = 0;
 
     public FragmentoSalida() {
     }
@@ -79,10 +80,9 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
         setHasOptionsMenu(true);
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        //Bundle extras = getActivity().getIntent().getExtras();
         Bundle extras = getArguments();
         ruta = extras.getParcelable("ruta");
-        pa = (PantallaInicio) super.getActivity();
+        pa = (PantallaInicio) getActivity();
 
         appBar = ((PantallaInicio) getActivity()).getSupportActionBar();
         appBar.setHomeAsUpIndicator(R.drawable.back);
@@ -94,7 +94,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
         collapsingToolbar.setTitle(ruta.getTitulo());
 
         RecyclerView reciclador = (RecyclerView) v.findViewById(R.id.reciclador);
-        AdaptadorSalida adp = new AdaptadorSalida(getActivity(), ruta.getListaLugaresVisitados());
+        AdaptadorSalida adp = new AdaptadorSalida(this, ruta.getListaLugaresVisitados());
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
         reciclador.setAdapter(adp);
@@ -105,10 +105,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
         tiempo = (TextView) v.findViewById(R.id.salida_tiempo);
         distancia = (TextView) v.findViewById(R.id.salida_distancia);
 
-        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
-            int time = ruta.getListaLugaresVisitados().get(x).getTiempoMedio() * 60;
-            tiempoTotal += time;
-        }
+
 
         return v;
     }
@@ -118,6 +115,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
+        builder.include(pa.datos.getSalida().getPosicion());
 
         for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
             Punto p = ruta.getListaLugaresVisitados().get(x);
@@ -156,6 +154,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
             HttpResponse response;
             stringBuilder = new StringBuilder();
 
+            Log.d("FrgSalida",url);
 
             response = client.execute(httppost);
             HttpEntity entity = response.getEntity();
@@ -178,7 +177,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 JSONObject distance = steps.getJSONObject("distance");
                 JSONObject duration = steps.getJSONObject("duration");
                 distanciaTotal += distance.getInt("value");
-                tiempoTotal += duration.getInt("value");
+                tiempoViaje += duration.getInt("value");
             }
             JSONObject draw = routes.getJSONObject("overview_polyline");
             String poly = draw.getString("points");
@@ -189,7 +188,13 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
+        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
+            int time = ruta.getListaLugaresVisitados().get(x).getTiempoMedio() * 60;
+            tiempoRuta += time;
+        }
+
         distancia.setText(distanciaTotal / 1000 + " Km");
+        int tiempoTotal = tiempoRuta + tiempoViaje;
         tiempo.setText(tiempoTotal / 60 + "min");
 
     }
@@ -233,7 +238,6 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.moveCamera(cu);
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -285,6 +289,8 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 nameValuePairs.add(new BasicNameValuePair("accion", "6"));
                 nameValuePairs.add(new BasicNameValuePair("user", sp.getString("id_user", "0")));
                 nameValuePairs.add(new BasicNameValuePair("ruta", ruta.getID()+""));
+                nameValuePairs.add(new BasicNameValuePair("distancia",distanciaTotal+""));
+                nameValuePairs.add(new BasicNameValuePair("tiempo",tiempoRuta+tiempoViaje+""));
                 nameValuePairs.add(new BasicNameValuePair("comentarios", ""));
                 nameValuePairs.add(new BasicNameValuePair("json", obj.toString()));
 
@@ -299,7 +305,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 if (success == 1) {
                     Log.d("Salida guardada!", json.toString());
                     pa.datos.addHistorial(json.getInt("idSalida"),
-                            new Historial(ruta,json.getString("fecha")));
+                            new Historial(ruta,json.getString("fecha"),json.getInt("distancia"), json.getInt("tiempo")));
                     return json.getString("Desc");
                 } else {
                     Log.d("Fallo al guardar!", json.getString("Desc"));

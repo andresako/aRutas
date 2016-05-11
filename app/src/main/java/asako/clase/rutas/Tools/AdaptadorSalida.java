@@ -18,14 +18,17 @@ import java.util.ArrayList;
 
 import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.R;
+import asako.clase.rutas.UI.FragmentoSalida;
 
 public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHolder>{
 
     private final ArrayList<Punto> listaPuntos;
     private final Context context;
+    private final FragmentoSalida padre;
 
-    public AdaptadorSalida(FragmentActivity activity, ArrayList<Punto> listaPuntos){
-        this.context = activity;
+    public AdaptadorSalida(FragmentoSalida activity, ArrayList<Punto> listaPuntos){
+        this.padre = activity;
+        this.context = activity.getActivity();
         this.listaPuntos = listaPuntos;
     }
     @Override
@@ -80,6 +83,7 @@ public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHo
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (input.getText().toString().trim().length() != 0) {
                             listaPuntos.get(position).setTiempoMedio(Integer.parseInt(input.getText().toString()));
+                            calcularTiempos();
                             holder.tiempo.setBackgroundResource(R.drawable.clock_green);
                         }
                     }
@@ -93,6 +97,10 @@ public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHo
                 alert.show();
             }
         });
+    }
+
+    private void calcularTiempos() {
+
     }
 
     @Override
