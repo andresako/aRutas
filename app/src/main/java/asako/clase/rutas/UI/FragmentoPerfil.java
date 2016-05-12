@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +34,11 @@ import asako.clase.rutas.R;
 import asako.clase.rutas.Tools.JsonParser;
 import asako.clase.rutas.Tools.MiConfig;
 
-public class FragmentoPerfil extends Fragment {
+public class FragmentoPerfil extends Fragment implements View.OnClickListener {
     private SharedPreferences sp;
     private MiConfig datos;
     private TextView tNombre, tUsuario, tSalida;
+    private String TAG = "frgPerfil";
 
     public FragmentoPerfil() {
     }
@@ -49,38 +49,23 @@ public class FragmentoPerfil extends Fragment {
         setHasOptionsMenu(true);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        datos = ((PantallaInicio)getActivity()).datos;
+        datos = ((PantallaInicio) getActivity()).datos;
 
         tNombre = (TextView) v.findViewById(R.id.texto_nombre);
         tUsuario = (TextView) v.findViewById(R.id.texto_email);
         tSalida = (TextView) v.findViewById(R.id.texto_salida);
         GridLayout grid = (GridLayout) v.findViewById(R.id.lSalida);
-        grid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Direccion de salida?");
-                // Set an EditText view to get user input
-                final EditText input = new EditText(getActivity());
-                alert.setView(input);
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (input.getText().toString().trim().length() != 0) {
-                            new StringToSalida().execute(input.getText().toString());
-                        }
-                    }
-                });
-
-                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Cancelado.
-                    }
-                });
-                alert.show();
-            }
-        });
-
-        tNombre.setText(sp.getString("nombre", "Dummy") + " " + sp.getString("apellidos", "Dummy"));
+        grid.setOnClickListener(this);
+        tNombre.setOnClickListener(this);
+        String sNombre = sp.getString("nombre", "Dummy");
+        String sApellido = sp.getString("apellidos", "Dummy");
+        String nombreFinal = "Sin nombre aún, pulse para añadir";
+        if (!sNombre.equalsIgnoreCase("null") || !sApellido.equalsIgnoreCase("null")) {
+            nombreFinal = "";
+            if (!sNombre.equalsIgnoreCase("null")) nombreFinal += sNombre + " ";
+            if (!sApellido.equalsIgnoreCase("null")) nombreFinal += sApellido;
+        }
+        tNombre.setText(nombreFinal);
         tUsuario.setText(sp.getString("username", "Dummy"));
         String salida = "Sin punto de salida";
         if (datos.isSalidaSet()) {
@@ -95,6 +80,44 @@ public class FragmentoPerfil extends Fragment {
         menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public void onClick(View v) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final EditText input = new EditText(getActivity());
+        alert.setView(input);
+
+        switch (v.getId()) {
+            case R.id.texto_nombre:
+                alert.setTitle("Nuevo nombre?");
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (input.getText().toString().trim().length() != 0) {
+                            new ActualizarNombre().execute(input.getText().toString());
+                        }
+                    }
+                });
+                break;
+
+            case R.id.lSalida:
+                alert.setTitle("Direccion de salida?");
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (input.getText().toString().trim().length() != 0) {
+                            new StringToSalida().execute(input.getText().toString());
+                        }
+                    }
+                });
+                break;
+        }
+        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Cancelado.
+            }
+        });
+        alert.show();
+    }
+
 
     private class StringToSalida extends AsyncTask<String, Void, Boolean> {
 
@@ -129,13 +152,13 @@ public class FragmentoPerfil extends Fragment {
                     Log.d("latLng", lat + " " + lng);
 
                     params = new ArrayList<>();
-                    if (datos.isSalidaSet()){
+                    if (datos.isSalidaSet()) {
                         p = datos.getSalida();
                         p.setPosicion(latlng);
 
                         params.add(new BasicNameValuePair("accion", "7"));
-                        params.add(new BasicNameValuePair("id",p.getID()+""));
-                    }else{
+                        params.add(new BasicNameValuePair("id", p.getID() + ""));
+                    } else {
                         params.add(new BasicNameValuePair("accion", "4"));
                         params.add(new BasicNameValuePair("idUser", sp.getString("id_user", "0")));
                         params.add(new BasicNameValuePair("nombre", "SALIDA"));
@@ -175,10 +198,50 @@ public class FragmentoPerfil extends Fragment {
         @Override
         protected void onPostExecute(Boolean msg) {
 
-            if (msg){
+            if (msg) {
                 tSalida.setText(datos.getSalida().getNomPosicion(getActivity()));
             }
             super.onPostExecute(msg);
+        }
+    }
+    private class ActualizarNombre extends AsyncTask<String, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            String nombre = args[0];
+
+            try {
+                List<NameValuePair> params = new ArrayList<>();
+                params.add(new BasicNameValuePair("accion", "9"));
+                params.add(new BasicNameValuePair("nombre", nombre));
+                params.add(new BasicNameValuePair("id", sp.getString("id_user", "0")));
+
+                JsonParser jParser = new JsonParser();
+                JSONObject json = jParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
+
+                int success = json.getInt("Resultado");
+                if (success == 1) {
+                    Log.d(TAG, "Editado correctamente! " + json.toString());
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putString("nombre",nombre);
+                    edit.apply();
+                }else{
+                    return false;
+                }
+
+            }catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean msg) {
+            super.onPostExecute(msg);
+            if (msg){
+                tNombre.setText(sp.getString("nombre", "Vacio"));
+            }
         }
     }
 

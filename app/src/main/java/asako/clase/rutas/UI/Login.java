@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -56,10 +57,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG_RESULTADO = "Resultado";
     private static final String TAG_RESUTLADO_DESCRIPCION = "Desc";
     private static final String TAG_ID_USER = "id_user";
-    private String TAG_LOG = "Login";
+    private String TAG = "Login";
     private MiConfig mc;
-    private EditText user, pass;
+    private TextView pass2T;
+    private EditText user, pass, pass2;
     private CheckBox cbRecordar;
+    private Button mSubmit, btnRegistro, btnRegAcc, btnRegCan;
     private ProgressDialog pDialog;
     private SharedPreferences sp;
     private JsonParser jParser = new JsonParser();
@@ -76,10 +79,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
-        Button mSubmit = (Button) findViewById(R.id.btnLogin);
+        pass2 = (EditText) findViewById(R.id.password2);
+        pass2T = (TextView) findViewById(R.id.TextRepPass);
+        mSubmit = (Button) findViewById(R.id.btnLogin);
+        btnRegistro = (Button) findViewById(R.id.btnRegistro);
+        btnRegAcc = (Button) findViewById(R.id.btnRegAcc);
+        btnRegCan = (Button) findViewById(R.id.btnRegCan);
         cbRecordar = (CheckBox) findViewById(R.id.recordarContra);
 
         mSubmit.setOnClickListener(this);
+        btnRegistro.setOnClickListener(this);
+        btnRegAcc.setOnClickListener(this);
+        btnRegCan.setOnClickListener(this);
 
         checkLogeo();
     }
@@ -101,8 +112,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             user.setText(sUser);
             pass.setText(sPass);
 
-            Log.d(TAG_LOG, "Intentando loguear");
+            Log.d(TAG, "Intentando loguear");
             new IntentoLogeo().execute();
+        }
+    }
+
+    private void modoRegistro(boolean modo){
+        if (modo){
+            pass2.setVisibility(View.VISIBLE);
+            pass2T.setVisibility(View.VISIBLE);
+            btnRegAcc.setVisibility(View.VISIBLE);
+            btnRegCan.setVisibility(View.VISIBLE);
+
+            cbRecordar.setVisibility(View.GONE);
+            btnRegistro.setVisibility(View.GONE);
+            mSubmit.setVisibility(View.GONE);
+        }else{
+            pass2.setVisibility(View.GONE);
+            pass2T.setVisibility(View.GONE);
+            btnRegAcc.setVisibility(View.GONE);
+            btnRegCan.setVisibility(View.GONE);
+
+            cbRecordar.setVisibility(View.VISIBLE);
+            btnRegistro.setVisibility(View.VISIBLE);
+            mSubmit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -115,6 +148,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 bRecordar = cbRecordar.isChecked();
                 new IntentoLogeo().execute();
                 break;
+
+            case R.id.btnRegistro:
+                modoRegistro(true);
+                break;
+
+            case R.id.btnRegCan:
+                modoRegistro(false);
+                break;
+
+            case R.id.btnRegAcc:
+                if (user.getText().toString().trim().length() != 0){
+                    if (pass.getText().toString().equals(pass2.getText().toString())){
+                        sUser = user.getText().toString();
+                        sPass = pass.getText().toString();
+                        new IntentoRegistro().execute();
+                    }else
+                    Log.d(TAG, "onClick: 1");
+                }else
+                    Log.d(TAG, "onClick: 2");
 
             default:
                 break;
@@ -149,13 +201,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     params.add(new BasicNameValuePair(TAG_USER, sUser));
                     params.add(new BasicNameValuePair(TAG_PASS, sPass));
 
-                    Log.d(TAG_LOG, "user:" + sUser + ", pass:" + sPass);
+                    Log.d(TAG, "user:" + sUser + ", pass:" + sPass);
 
                     JSONObject json = jParser.peticionHttp(LOGIN_URL, "POST", params);
 
                     success = json.getInt(TAG_RESULTADO);
                     if (success == 1) {
-                        Log.d(TAG_LOG, "Logeado correctamente! " + json.toString());
+                        Log.d(TAG, "Logeado correctamente! " + json.toString());
 
                         SharedPreferences.Editor edit = sp.edit();
                         if (bRecordar) {
@@ -171,7 +223,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         edit.putString(TAG_APELLIDOS, json.getString(TAG_APELLIDOS));
 
 
-                        Log.d(TAG_LOG, "añadida salida " + json.getBoolean("salida"));
+                        Log.d(TAG, "añadida salida " + json.getBoolean("salida"));
                         if (json.getBoolean("salida")) {
                             LatLng ltg = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
                             ctp = new Punto(json.getInt("id"), "salida", ltg);
@@ -186,7 +238,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                         return true;
                     } else {
-                        Log.d(TAG_LOG, "Fallo al logear! " + json.getString(TAG_RESUTLADO_DESCRIPCION));
+                        Log.d(TAG, "Fallo al logear! " + json.getString(TAG_RESUTLADO_DESCRIPCION));
                         return false;
                     }
                 } catch (JSONException e) {
@@ -209,7 +261,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         }
     }
-
     class RecuperarDatos extends AsyncTask<Void, Void, Boolean> {
 
         List<NameValuePair> params = new ArrayList<>();
@@ -243,7 +294,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             JSONObject joRutas = recogerDatosDe(URL, CARGAR_RUTAS);
             JSONObject joHistorial = recogerDatosDe(URL, CARGAR_HISTORIAL);
 
-            Log.d(TAG_LOG, "Cargando puntos");
+            Log.d(TAG, "Cargando puntos");
             //Rellenando PUNTOS
             try {
                 JSONArray mPuntos = joPuntos.getJSONArray(TAG_PUNTOS);
@@ -266,7 +317,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
 
-            Log.d(TAG_LOG, "Cargando rutas");
+            Log.d(TAG, "Cargando rutas");
             // Rellenando RUTAS
             try {
                 JSONArray mRutas = joRutas.getJSONArray(TAG_RUTAS);
@@ -301,7 +352,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
 
-            Log.d(TAG_LOG, "Cargando historia");
+            Log.d(TAG, "Cargando historia");
             // Rellenando Historial
             try {
                 JSONArray mHistorial = joHistorial.getJSONArray(TAG_HISTORIAL);
@@ -382,4 +433,56 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
     }
+
+    class IntentoRegistro extends AsyncTask<Void, Void, Boolean>{
+        String URL = "http://overant.es/Andres/acciones.php";
+        @Override
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(Login.this);
+            pDialog.setMessage("Registrando...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            super.onPreExecute();
+        }
+        @Override
+        protected Boolean doInBackground(Void... args) {
+            if (isNetworkAvailable()) {
+                int success;
+                try {
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("accion", "8"));
+                    params.add(new BasicNameValuePair("user", sUser));
+                    params.add(new BasicNameValuePair("pass", sPass));
+
+                    JSONObject json = jParser.peticionHttp(URL, "POST", params);
+
+                    success = json.getInt(TAG_RESULTADO);
+                    if (success == 1) {
+                        Log.d(TAG, "Creado correctamente! " + json.toString());
+                    }else{
+                        return false;
+                    }
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }else{
+                return false;
+            }
+            return true;
+        }
+        @Override
+        protected void onPostExecute(Boolean msg) {
+            super.onPostExecute(msg);
+            pDialog.dismiss();
+            if (msg) {
+                modoRegistro(false);
+                msgError("Usuario creado correctamente");
+            } else {
+                msgError("ERROR\nUsuario ya existe");
+            }
+        }
+    }
 }
+

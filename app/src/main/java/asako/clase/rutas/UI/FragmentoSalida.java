@@ -59,15 +59,14 @@ import asako.clase.rutas.Tools.JsonParser;
 public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
 
+    public int tiempoRuta, tiempoViaje = 0;
     private ActionBar appBar;
     private DrawerLayout mDrawer;
     private GoogleMap mMap;
     private PantallaInicio pa;
     private Ruta ruta;
     private SharedPreferences sp;
-
     private TextView tiempo, distancia;
-    public int tiempoRuta, tiempoViaje = 0;
     private int distanciaTotal = 0;
 
     public FragmentoSalida() {
@@ -104,7 +103,6 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
         tiempo = (TextView) v.findViewById(R.id.salida_tiempo);
         distancia = (TextView) v.findViewById(R.id.salida_distancia);
-
 
 
         return v;
@@ -154,7 +152,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
             HttpResponse response;
             stringBuilder = new StringBuilder();
 
-            Log.d("FrgSalida",url);
+            Log.d("FrgSalida", url);
 
             response = client.execute(httppost);
             HttpEntity entity = response.getEntity();
@@ -193,10 +191,15 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
             tiempoRuta += time;
         }
 
+        refreshDatos();
+
+    }
+
+    public void refreshDatos(){
         distancia.setText(distanciaTotal / 1000 + " Km");
         int tiempoTotal = tiempoRuta + tiempoViaje;
         tiempo.setText(tiempoTotal / 60 + "min");
-
+        Log.d("frgSalida", "refreshDatos: "+tiempoRuta+","+tiempoViaje+","+tiempoTotal);
     }
 
     private void pintarMapa(GoogleMap mMap, String poli) {
@@ -256,6 +259,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
             case R.id.save_item:
                 new GuardarSalida().execute();
+                getActivity().getSupportFragmentManager().popBackStack();
                 return true;
         }
 
@@ -288,9 +292,9 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 //Posting user data to script
                 nameValuePairs.add(new BasicNameValuePair("accion", "6"));
                 nameValuePairs.add(new BasicNameValuePair("user", sp.getString("id_user", "0")));
-                nameValuePairs.add(new BasicNameValuePair("ruta", ruta.getID()+""));
-                nameValuePairs.add(new BasicNameValuePair("distancia",distanciaTotal+""));
-                nameValuePairs.add(new BasicNameValuePair("tiempo",tiempoRuta+tiempoViaje+""));
+                nameValuePairs.add(new BasicNameValuePair("ruta", ruta.getID() + ""));
+                nameValuePairs.add(new BasicNameValuePair("distancia", distanciaTotal + ""));
+                nameValuePairs.add(new BasicNameValuePair("tiempo", tiempoRuta + tiempoViaje + ""));
                 nameValuePairs.add(new BasicNameValuePair("comentarios", ""));
                 nameValuePairs.add(new BasicNameValuePair("json", obj.toString()));
 
@@ -305,7 +309,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 if (success == 1) {
                     Log.d("Salida guardada!", json.toString());
                     pa.datos.addHistorial(json.getInt("idSalida"),
-                            new Historial(ruta,json.getString("fecha"),json.getInt("distancia"), json.getInt("tiempo")));
+                            new Historial(ruta, json.getString("fecha"), json.getInt("distancia"), json.getInt("tiempo")));
                     return json.getString("Desc");
                 } else {
                     Log.d("Fallo al guardar!", json.getString("Desc"));
@@ -322,9 +326,7 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(pa, resp, Toast.LENGTH_LONG).show();
             } else if (resp.equals("OK")) {
                 Toast.makeText(pa, "Guardado satisfactoriamente", Toast.LENGTH_LONG).show();
-                pa.onBackPressed();
             }
-
         }
     }
 }

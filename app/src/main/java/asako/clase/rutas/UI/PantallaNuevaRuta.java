@@ -57,8 +57,7 @@ public class PantallaNuevaRuta extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.salidaLista);
         botonAdd = (Button) findViewById(R.id.salidaAddBoton);
         botonGuardar = (Button) findViewById(R.id.salidaGuardarBoton);
-
-
+        
         lv.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, listaPuntos));

@@ -130,6 +130,12 @@ public class PantallaInicio extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        this.datos = MiConfig.get();
+        super.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actividad_principal, menu);
         return true;
@@ -171,23 +177,7 @@ public class PantallaInicio extends AppCompatActivity {
                 }
 
             } else if (fragmentManager.findFragmentByTag("salidaActiva") != null) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
-                alert.setTitle("Quiere guardar los cambios?");
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarPunto();
-                                fragmentManager.popBackStackImmediate();
-                            }
-                        }
-                );
-                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                fragmentManager.popBackStackImmediate();
-                            }
-                        }
-                );
-                alert.show();
-
+                fragmentManager.popBackStackImmediate();
             }
         } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);

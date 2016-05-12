@@ -8,63 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".UI.Login">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignRight="@+id/password"
-        android:text="Entrar" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recordar contraseña"
-        android:id="@+id/recordarContra"
-        android:layout_above="@id/btnLogin"
-        android:layout_alignLeft="@id/btnLogin"
-        android:layout_alignStart="@id/btnLogin" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/recordarContra"
-        android:layout_marginBottom="15dp"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:inputType="textPassword">
-    </EditText>
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/password"
-        android:layout_alignLeft="@id/password"
-        android:text="Password" />
-
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/TextView01"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:singleLine="true">
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/username"
-        android:layout_alignLeft="@id/username"
-        android:text="Username" />
-
     <TextView
         android:id="@+id/titulo"
         android:layout_width="wrap_content"
@@ -76,14 +19,131 @@
         android:text="Rutas Andresako"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/textView1"
+        android:layout_height="200dp"
         android:layout_below="@+id/titulo"
         android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/username"
+        android:text="Username" />
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView1"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:singleLine="true">
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/password"
+        android:text="Password" />
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextView01"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPassword">
+    </EditText>
+
+    <TextView
+        android:id="@+id/TextRepPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@id/password"
+        android:text="Password"
+        android:visibility="gone"/>
+    <EditText
+        android:id="@+id/password2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TextRepPass"
+        android:layout_marginBottom="15dp"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:visibility="gone">
+    </EditText>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recordar contraseña"
+        android:id="@+id/recordarContra"
+        android:layout_above="@+id/btnLogin"
+        android:layout_marginBottom="10dp"
+        android:layout_alignLeft="@+id/btnLogin"
+        android:layout_alignStart="@+id/btnLogin" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:background="@android:color/holo_red_light"
+        android:layout_alignLeft="@+id/password"
+        android:text="Entrar" />
+    <Button
+        android:id="@+id/btnRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignRight="@+id/password"
+        android:text="Nueva\nCuenta" />
+
+    <Button
+        android:id="@+id/btnRegAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:background="@android:color/holo_red_light"
+        android:layout_alignLeft="@+id/password"
+        android:text="Aceptar"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/btnRegCan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignRight="@+id/password"
+        android:text="Cancelar"
+        android:visibility="gone"/>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -100,7 +100,12 @@ public class AdaptadorSalida extends RecyclerView.Adapter<AdaptadorSalida.ViewHo
     }
 
     private void calcularTiempos() {
-
+        int ct = 0;
+        for (Punto p: listaPuntos){
+            ct += p.getTiempoMedio()*60;
+        }
+        padre.tiempoRuta = ct;
+        padre.refreshDatos();
     }
 
     @Override
