@@ -13,7 +13,8 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="@dimen/ancho_logo"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
         android:src="@drawable/logo" />
 
     <TableLayout

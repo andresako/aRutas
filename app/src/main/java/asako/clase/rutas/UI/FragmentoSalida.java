@@ -91,9 +91,10 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) v.findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(ruta.getTitulo());
+        collapsingToolbar.setExpandedTitleColor(Color.RED);
 
         RecyclerView reciclador = (RecyclerView) v.findViewById(R.id.reciclador);
-        AdaptadorSalida adp = new AdaptadorSalida(this, ruta.getListaLugaresVisitados());
+        AdaptadorSalida adp = new AdaptadorSalida(this, ruta.getListaPuntos());
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
         reciclador.setLayoutManager(linearLayout);
         reciclador.setAdapter(adp);
@@ -115,8 +116,8 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
         builder.include(pa.datos.getSalida().getPosicion());
 
-        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
-            Punto p = ruta.getListaLugaresVisitados().get(x);
+        for (int x = 0; x < ruta.getListaPuntos().size(); x++) {
+            Punto p = ruta.getListaPuntos().get(x);
             mMap.addMarker(new MarkerOptions().position(p.getPosicion()).title(p.getNombre()));
             builder.include(p.getPosicion());
         }
@@ -139,8 +140,8 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
 
         String salida = sp.getString("lat", "") + "," + sp.getString("lng", "");
         String puntos = "";
-        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
-            Punto p = ruta.getListaLugaresVisitados().get(x);
+        for (int x = 0; x < ruta.getListaPuntos().size(); x++) {
+            Punto p = ruta.getListaPuntos().get(x);
             if (x != 0) puntos += "%7C";
             puntos += p.getPosicion().latitude + "," + p.getPosicion().longitude;
         }
@@ -186,8 +187,8 @@ public class FragmentoSalida extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
-        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
-            int time = ruta.getListaLugaresVisitados().get(x).getTiempoMedio() * 60;
+        for (int x = 0; x < ruta.getListaPuntos().size(); x++) {
+            int time = ruta.getListaPuntos().get(x).getTiempoMedio() * 60;
             tiempoRuta += time;
         }
 

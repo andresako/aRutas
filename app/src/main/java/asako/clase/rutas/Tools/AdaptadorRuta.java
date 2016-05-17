@@ -27,7 +27,7 @@ public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Punto punto = ruta.getListaLugaresVisitados().get(position);
+        Punto punto = ruta.getListaPuntos().get(position);
         holder.nombre.setText(punto.getNombre());
         holder.direccion.setText(punto.getPosicion().toString());
         if (punto.getTiempoMedio() != 0) {
@@ -46,7 +46,7 @@ public class AdaptadorRuta extends RecyclerView.Adapter<AdaptadorRuta.ViewHolder
 
     @Override
     public int getItemCount() {
-        return ruta.getListaLugaresVisitados().size();
+        return ruta.getListaPuntos().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

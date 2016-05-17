@@ -16,9 +16,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Rutas Andresako"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        android:text="Por Andres Martinez"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
@@ -70,7 +69,7 @@
         android:layout_below="@+id/password"
         android:layout_marginTop="10dp"
         android:layout_alignLeft="@id/password"
-        android:text="Password"
+        android:text="Repitelo"
         android:visibility="gone"/>
     <EditText
         android:id="@+id/password2"

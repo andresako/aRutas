@@ -84,6 +84,7 @@ public class PantallaInicio extends AppCompatActivity {
                     edit.putBoolean("recordarContra", false);
                     edit.putString("password", "");
                     edit.apply();
+                    datos.vaciar();
                     finish();
                     startActivity(new Intent(PantallaInicio.this, Login.class));
                 }
@@ -115,9 +116,6 @@ public class PantallaInicio extends AppCompatActivity {
                 startActivity(new Intent(this, MapsActivity.class));
                 break;
 
-            case R.id.item_configuracion:
-                //startActivity(new Intent(this, MapsActivity.class));
-                break;
         }
         if (fragmentoGenerico != null) {
             fragmentManager

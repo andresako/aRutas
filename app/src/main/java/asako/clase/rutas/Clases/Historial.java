@@ -12,9 +12,6 @@ public class Historial implements Serializable, Parcelable {
     private String fecha;
     private Ruta ruta;
 
-    public Historial() {
-    }
-
     public Historial(Ruta ruta, String fecha, int distancia, int tiempo) {
         this.ruta = ruta;
         this.fecha = fecha;

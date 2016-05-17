@@ -74,9 +74,71 @@ public class AdaptadorHistorial extends RecyclerView.Adapter<AdaptadorHistorial.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Historial item = listaHistoriales.get(position);
-        holder.titulo.setText(item.getRuta().getTitulo());
-        holder.fecha.setText(item.getFecha());
+        holder.titulo.setText(tituloOrdenado(item));
+        holder.fecha.setText(fechaOrdenada(item.getFecha()));
 
+    }
+
+    private String tituloOrdenado(Historial h){
+        String ordenado = "";
+        ordenado += h.getRuta().getTitulo() + "     ";
+        int horas = h.getTiempo() / 3600;
+        int restante = h.getTiempo() - horas * 3600;
+        int mins = restante / 60;
+        String min = mins + "";
+        if (mins < 10) min = "0"+min;
+        ordenado += horas+":"+min+"h";
+        return ordenado;
+    }
+    private String fechaOrdenada(String fecha) {
+        String ordenada = "";           //fecha = YYYY-MM-DD hh:mm:ss
+        String[] todo,dia, hora;
+        todo = fecha.split(" ");        // 0 = fecha, 1 hora
+        dia = todo[0].split("-");       // 0 = año, 1 = mes, 2 = dia
+        hora = todo[1].split(":");      // 0 = hora, 1 = min, 2 = secs
+        ordenada += dia[2] + " de ";
+        String mes = "";
+        switch (Integer.valueOf(dia[1])){
+            case 1:
+                mes = "Enero";
+                break;
+            case 2:
+                mes = "Febrero";
+                break;
+            case 3:
+                mes = "Marzo";
+                break;
+            case 4:
+                mes = "Abril";
+                break;
+            case 5:
+                mes = "Mayo";
+                break;
+            case 6:
+                mes = "Junio";
+                break;
+            case 7:
+                mes = "Julio";
+                break;
+            case 8:
+                mes = "Agosto";
+                break;
+            case 9:
+                mes = "Septiembre";
+                break;
+            case 10:
+                mes = "Octubre";
+                break;
+            case 11:
+                mes = "Noviembre";
+                break;
+            case 12:
+                mes = "Diciembre";
+                break;
+        }
+        ordenada += mes + "     " + hora[0]+":"+hora[1];
+
+        return ordenada;
     }
 
     @Override

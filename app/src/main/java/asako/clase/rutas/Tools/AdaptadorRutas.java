@@ -2,7 +2,6 @@ package asako.clase.rutas.Tools;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +30,8 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
         for (int x = 0; x < datos.getListaRutas().size(); x++) {
             NombresRutas.add(datos.getListaRutas().get(x));
             ArrayList<String> puntos = new ArrayList<>();
-            for (int y = 0; y < datos.getListaRutas().get(x).getListaLugaresVisitados().size(); y++) {
-                puntos.add(datos.getListaRutas().get(x).getListaLugaresVisitados().get(y).getNombre());
+            for (int y = 0; y < datos.getListaRutas().get(x).getListaPuntos().size(); y++) {
+                puntos.add(datos.getListaRutas().get(x).getListaPuntos().get(y).getNombre());
             }
             PuntosdeRutas.put(NombresRutas.get(x).getTitulo(), puntos);
         }
@@ -117,8 +116,8 @@ public class AdaptadorRutas extends BaseExpandableListAdapter {
 
         NombresRutas.add(ruta);
         ArrayList<String> puntos = new ArrayList<>();
-        for (int x = 0; x < ruta.getListaLugaresVisitados().size(); x++) {
-            puntos.add(ruta.getListaLugaresVisitados().get(x).getNombre());
+        for (int x = 0; x < ruta.getListaPuntos().size(); x++) {
+            puntos.add(ruta.getListaPuntos().get(x).getNombre());
         }
         PuntosdeRutas.put(ruta.getTitulo(), puntos);
         this.notifyDataSetChanged();

@@ -343,7 +343,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         }
                         listaCt.add(pt2);
                     }
-                    Ruta ctR = new Ruta(titulo, 0, listaCt);
+                    Ruta ctR = new Ruta(titulo, listaCt);
                     ctR.setID(id);
                     mc.addRuta(id, ctR);
 
@@ -383,7 +383,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Intent in = new Intent(Login.this, PantallaInicio.class);
                 startActivity(in);
             }
-
         }
 
         private JSONObject recogerDatosDe(String url, int accion) {
