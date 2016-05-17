@@ -12,22 +12,24 @@ import asako.clase.rutas.Clases.Ruta;
 public class MiConfig implements Serializable {
 
     private static MiConfig MC;
+    private static Punto SALIDA;
+    private static LinkedHashMap<Integer, Punto> HASH_PUNTOS;
     private static LinkedHashMap<Integer, Ruta> HASH_RUTAS;
     private static LinkedHashMap<Integer, Historial> HASH_HISTORIAL;
-    private static Punto SALIDA = null;
-    private static LinkedHashMap<Integer, Punto> HASH_PUNTOS;
 
     private MiConfig() {
         HASH_PUNTOS = new LinkedHashMap<>();
         HASH_RUTAS = new LinkedHashMap<>();
         HASH_HISTORIAL = new LinkedHashMap<>();
+        SALIDA = null;
     }
 
     public synchronized static MiConfig get() {
-        if (MC == null) {
-            MC = new MiConfig();
-        }
+        if (MC == null) MC = new MiConfig();
         return MC;
+    }
+    public void vaciar(){
+        MC = new MiConfig();
     }
 
     public boolean isSalidaSet() {

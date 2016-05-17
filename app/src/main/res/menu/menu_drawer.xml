@@ -23,9 +23,5 @@
             android:id="@+id/item_mapa"
             android:icon="@drawable/mapa"
             android:title="@string/TAG_mapa" />
-        <item
-            android:id="@+id/item_configuracion"
-            android:icon="@drawable/configuracion"
-            android:title="@string/TAG_configuracion" />
     </group>
 </menu>

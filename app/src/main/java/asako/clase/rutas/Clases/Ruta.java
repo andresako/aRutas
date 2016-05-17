@@ -8,34 +8,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Ruta implements Parcelable {
-    private String titulo;
     private int ID = 0;
-    private int tiempo = 0;
-    private int distancia = 0;
-    private ArrayList<Punto> listaLugaresVisitados = new ArrayList<>();
+    private String titulo;
+    private ArrayList<Punto> listaPuntos = new ArrayList<>();
 
     public Ruta(int id) {
         this.ID = id;
     }
 
-    public Ruta(String titulo, int distancia, ArrayList<Punto> listaLugaresVisitados) {
+    public Ruta(String titulo, ArrayList<Punto> listaPuntos) {
         this.titulo = titulo;
-        this.distancia = distancia;
-        this.listaLugaresVisitados = listaLugaresVisitados;
-        for (Punto pt : listaLugaresVisitados) {
-            this.tiempo += pt.getTiempoMedio();
-        }
+        this.listaPuntos = listaPuntos;
     }
 
     protected Ruta(Parcel in) {
         titulo = in.readString();
         ID = in.readInt();
-        tiempo = in.readInt();
-        distancia = in.readInt();
-        in.readTypedList(listaLugaresVisitados, Punto.CREATOR);
+        in.readTypedList(listaPuntos, Punto.CREATOR);
     }
 
     public static final Creator<Ruta> CREATOR = new Creator<Ruta>() {
@@ -64,25 +55,11 @@ public class Ruta implements Parcelable {
         this.titulo = titulo;
     }
 
-    public int getTiempo() {
-        return tiempo;
-    }
-    public int getDistancia() {
-        return distancia;
-    }
-
-    public ArrayList<Punto> getListaLugaresVisitados() {
-        return listaLugaresVisitados;
-    }
-
-    public void addTiempo(int tiempo) {
-        this.tiempo += tiempo;
-    }
-    public void addDistancia(int distancia) {
-        this.distancia += distancia;
+    public ArrayList<Punto> getListaPuntos() {
+        return listaPuntos;
     }
     public void addLugar(Punto punto) {
-        this.listaLugaresVisitados.add(punto);
+        this.listaPuntos.add(punto);
     }
 
     @Override
@@ -93,20 +70,18 @@ public class Ruta implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(titulo);
         dest.writeInt(ID);
-        dest.writeInt(tiempo);
-        dest.writeInt(distancia);
-        dest.writeTypedList(listaLugaresVisitados);
+        dest.writeTypedList(listaPuntos);
     }
 
     public JSONObject toJsonObject() {
         JSONObject ct = new JSONObject();
         JSONArray jarray = new JSONArray();
         try {
-            for (int i = 0; i < this.listaLugaresVisitados.size(); i++) {
+            for (int i = 0; i < this.listaPuntos.size(); i++) {
                 JSONObject jobj = new JSONObject();
-                jobj.put("tiempo", listaLugaresVisitados.get(i).getTiempoMedio());
-                jobj.put("id",listaLugaresVisitados.get(i).getID());
-                jobj.put("detalles",listaLugaresVisitados.get(i).getComentarios());
+                jobj.put("tiempo", listaPuntos.get(i).getTiempoMedio());
+                jobj.put("id", listaPuntos.get(i).getID());
+                jobj.put("detalles", listaPuntos.get(i).getComentarios());
                 jarray.put(jobj);
             }
             ct.put("titulo", this.titulo);
@@ -115,7 +90,6 @@ public class Ruta implements Parcelable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         return ct;
     }

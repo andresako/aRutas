@@ -1,7 +1,5 @@
 package asako.clase.rutas.Tools;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 
@@ -12,9 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,11 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-
-import asako.clase.rutas.Clases.Ruta;
-import asako.clase.rutas.UI.PantallaNuevaRuta;
 
 public class JsonParser {
 
@@ -37,7 +29,8 @@ public class JsonParser {
     public JsonParser(){
     }
 
-    public JSONObject peticionHttp(String url, String metodo, List<NameValuePair> params) {
+    public JSONObject peticionHttp(
+            String url, String metodo, List<NameValuePair> params) {
 
         // Peticion HTTP
         try {
