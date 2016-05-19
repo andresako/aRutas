@@ -10,9 +10,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import asako.clase.rutas.Tools.AdaptadorHistorial;
+import asako.clase.rutas.Tools.DecoracionLineaDivisoria;
 import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
 

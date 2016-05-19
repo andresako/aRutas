@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import asako.clase.rutas.Tools.AdaptadorHistorial;
+import asako.clase.rutas.Tools.DecoracionLineaDivisoria;
 import asako.clase.rutas.Tools.MiConfig;
 import asako.clase.rutas.R;
 

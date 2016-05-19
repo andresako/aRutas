@@ -18,6 +18,7 @@ import android.widget.TextView;
 import asako.clase.rutas.Clases.Historial;
 import asako.clase.rutas.R;
 import asako.clase.rutas.Tools.AdaptadorRuta;
+import asako.clase.rutas.Tools.DecoracionLineaDivisoria;
 
 public class FragmentoRuta extends Fragment {
 

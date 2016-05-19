@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -156,9 +157,10 @@ public class PantallaInicio extends AppCompatActivity {
                 if (((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).editado) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(PantallaInicio.this);
                     alert.setTitle("Quiere guardar los cambios?");
-                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    AlertDialog.Builder builder = alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    //((FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo")).guardarPunto();
+                                    FragmentoPunto puntoActivo = (FragmentoPunto) fragmentManager.findFragmentByTag("puntoActivo");
+                                    puntoActivo.guardarPunto();
                                     fragmentManager.popBackStackImmediate();
                                 }
                             }

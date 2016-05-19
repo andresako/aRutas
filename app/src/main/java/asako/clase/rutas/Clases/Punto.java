@@ -61,6 +61,8 @@ public class Punto implements Parcelable {
     public String getNombre() {
         return nombre;
     }
+    public void setNombre(String nombre){this.nombre = nombre;}
+
     public LatLng getPosicion() {
         return posicion;
     }

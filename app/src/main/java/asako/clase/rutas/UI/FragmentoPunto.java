@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,8 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import asako.clase.rutas.Clases.Punto;
 import asako.clase.rutas.R;
@@ -45,6 +49,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
 
     private final FragmentManager fragmentManager;
     public boolean editado = false;
+    private boolean nuevo = false;
     private TextView nombre;
     private TextView direccion;
     private TextView descripcion;
@@ -86,10 +91,12 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             nombre.setText(punto.getNombre());
             direccion.setText(punto.getNomPosicion(getContext()));
             descripcion.setText(punto.getDescripcion());
+            nuevo = false;
         } else {
             nombre.setHint("Introduce nombre del nuevo punto");
             direccion.setHint("Introduce direccion");
             descripcion.setHint("Algun nombre para recordarlo?");
+            nuevo = true;
         }
 
         toolbar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
@@ -111,7 +118,7 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
                 mDrawer.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.save_item:
-                if (todoCorrecto()) new guardarPunto().execute();
+                guardarPunto();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -173,8 +180,13 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     if (input.getText().toString().trim().length() != 0) {
-                        finalTvct.setText(input.getText());
-                        editado = true;
+                        if(finalTvct == direccion){
+                            new ComprobarDireccion().execute(input.getText().toString());
+                            editado = true;
+                        }else {
+                            finalTvct.setText(input.getText());
+                            editado = true;
+                        }
                     }
                 }
             });
@@ -193,6 +205,14 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         menu.clear();
         inflater.inflate(R.menu.menu_guardar, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void guardarPunto(){
+        if (todoCorrecto()){
+            new guardarPunto().execute();
+        }else{
+            Log.d("FrgmPunto", "Faltan datos");
+        }
     }
 
     class guardarPunto extends AsyncTask<Void, Void, Boolean> {
@@ -259,30 +279,55 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
 
             //  Intento guardar el punto
             if (latlng != null && titulo != null) {
-                params = new ArrayList<>();
-                params.add(new BasicNameValuePair("accion", "4"));
-                params.add(new BasicNameValuePair("idUser", sp.getString("id_user", "0")));
-                params.add(new BasicNameValuePair("nombre", titulo));
-                params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
-                params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
-                params.add(new BasicNameValuePair("descripcion", detalle));
-                try {
-                    json = jsonParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
+                if (nuevo) {
+                    params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("accion", "4"));
+                    params.add(new BasicNameValuePair("idUser", sp.getString("id_user", "0")));
+                    params.add(new BasicNameValuePair("nombre", titulo));
+                    params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
+                    params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
+                    params.add(new BasicNameValuePair("descripcion", detalle));
+                    try {
+                        json = jsonParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
 
-                    if (json.getInt("Resultado") == 1) {
+                        if (json.getInt("Resultado") == 1) {
 
-                        Punto pt = new Punto(
-                                json.getInt("ID"),
-                                json.getString("nombre"),
-                                new LatLng(json.getDouble("lat"), json.getDouble("lng")));
-                        pt.setDescripcion(json.getString("descripcion"));
-                        MiConfig mc = MiConfig.get();
-                        mc.addPunto(pt.getID(), pt);
-                        res = true;
+                            Punto pt = new Punto(
+                                    json.getInt("ID"),
+                                    json.getString("nombre"),
+                                    new LatLng(json.getDouble("lat"), json.getDouble("lng")));
+                            pt.setDescripcion(json.getString("descripcion"));
+                            MiConfig mc = MiConfig.get();
+                            mc.addPunto(pt.getID(), pt);
+                            res = true;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        res = false;
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    res = false;
+                }else{
+                    params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("accion", "7"));
+                    params.add(new BasicNameValuePair("id", punto.getID()+""));
+                    params.add(new BasicNameValuePair("nombre", titulo));
+                    params.add(new BasicNameValuePair("lat", latlng.latitude + ""));
+                    params.add(new BasicNameValuePair("lng", latlng.longitude + ""));
+                    params.add(new BasicNameValuePair("descripcion", detalle));
+
+                    try {
+                        json = jsonParser.peticionHttp("http://overant.es/Andres/acciones.php", "POST", params);
+
+                        Log.d("FrgmPunto", json.toString());
+                        if (json.getInt("Resultado") == 1) {
+                            punto.setPosicion(latlng);
+                            punto.setDescripcion(detalle);
+                            punto.setNombre(titulo);
+                            res = true;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        res = false;
+                    }
                 }
             }
 
@@ -293,10 +338,89 @@ public class FragmentoPunto extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Log.d("Punto", "Guardado correctamente!");
+                editado = false;
                 getActivity().onBackPressed();
-            }
+            }else Log.d("Punto", "Fallo al guardar");
             pDialog.dismiss();
             super.onPostExecute(result);
+        }
+    }
+    class ComprobarDireccion extends AsyncTask<String, Void, Boolean>{
+        String direccionFinal = "";
+        ProgressDialog pDialog;
+        String status;
+        JSONObject json;
+        LatLng latLng;
+        List<NameValuePair> params;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Buscando lugar...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            double lat = 0;
+            double lng = 0;
+
+            //  Check localizacion
+            String url = "https://maps.googleapis.com/maps/api/geocode/json";
+            params = new ArrayList<>();
+            params.add(new BasicNameValuePair("address", args[0]));
+
+            JsonParser jsonParser = new JsonParser();
+            json = jsonParser.peticionHttp(url, "GET", params);
+
+
+            try {
+                status = json.getString("status");
+
+                if (status.equals("OK")) {
+                    JSONArray result = (JSONArray) json.get("results");
+                    JSONObject obj = (JSONObject) result.get(0);
+                    JSONObject geometry = (JSONObject) obj.get("geometry");
+                    JSONObject location = (JSONObject) geometry.get("location");
+                    lat = location.getDouble("lat");
+                    lng = location.getDouble("lng");
+                    latLng = new LatLng(lat, lng);
+                    Log.d("latLng", lat + " " + lng);
+                } else {
+                    Log.d("Pos", "no hay LatLng");
+                }
+
+                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> addresses  = null;
+                try {
+                    addresses = geocoder.getFromLocation(lat,lng, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String zip = addresses.get(0).getPostalCode();
+                String country = addresses.get(0).getCountryName();
+
+                direccionFinal = addresses.get(0).getAddressLine(0) + "," + city + "," + country;
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean msg) {
+            super.onPostExecute(msg);
+            if (msg)direccion.setText(direccionFinal);
+            pDialog.dismiss();
         }
     }
 
